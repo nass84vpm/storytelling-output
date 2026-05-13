@@ -1,0 +1,716 @@
+---
+name: ux-graph-skill
+description: >
+  Use this skill whenever creating, recommending, or reviewing any data visualisation or chart — including dashboards, reports, presentations, product UIs, or any output that includes a graph. Trigger on: "create a chart", "show this data", "visualise this", "add a graph", "what chart should I use", "display these results", or any request to represent data visually. Always apply this skill before choosing a chart type, configuring axes, or styling a visual output. This skill governs chart selection, plain language summaries, trust and attribution, misinterpretation risk, cognitive load, accessibility, and UX best practices for all Voxpopme data outputs.
+---
+
+# UX Graph Skill
+
+Rules for choosing and displaying data visualisations in a clear, accurate, and user-friendly way.
+
+Assume the audience has low data literacy. Charts must be self-explanatory to a non-expert who may be making business decisions or sharing the chart with clients. Every chart must work as a static visual — no reliance on interaction to convey the core message.
+
+---
+
+## Rule 1: Chart Selection
+
+Start by identifying the **analytical purpose** of the data. Then apply the correct chart type below.
+
+### Categorical Comparison and Ranking
+**Use:** Bar charts (horizontal) or column charts (vertical)
+**When:** Comparing values across discrete categories or showing rankings
+**Rules:**
+- The quantitative axis MUST start at zero
+- Use horizontal bars when category labels are long
+- Sort by value unless a natural order exists (e.g. time, hierarchy)
+
+**Horizontal bar chart — PPTX layouts** (7 approved, agent chooses based on content):
+- **A: Standard coloured bars** — Each category its own colour from the category palette. Default choice.
+- **B: Single colour, sorted** — All bars in emphasis colour, ranked by value. Clean when colour distinction isn't needed.
+- **C: Highlight leader** — Top bar in emphasis, rest in grey. Draws attention to the winner.
+- **D: Bars with grey track** — Grey 100% track behind each bar shows proportion context.
+- **E: Bars in card rows** — Each bar inside a card. More structured/corporate feel.
+- **F: Bars left + stat card right** — Split layout with headline stat callout beside the bars.
+- **G: Lollipop (dot + line)** — Dot at end of a thin line. Lighter visual weight, good for many categories.
+
+### Trend Analysis (Time-Series)
+**Use:** Line charts, area charts, waterfall charts
+**When:** Showing how a value changes over time
+**Rules:**
+- Line charts are for time-series data ONLY — never use them for non-time categorical data
+- **No gridlines** on line charts in PPTX — use `valGridLine: { style: "none" }, catGridLine: { style: "none" }`
+
+**Line chart — PPTX layouts** (7 approved, agent chooses based on content):
+- **A: Single series, clean** — One line, no gridlines, axis labels only. Default for single-metric trends.
+- **B: Two series + direct end labels** — Solid + dashed lines, series names at line ends (not distant legend).
+- **C: Line + stat card right** — Chart left, delta callout card right showing growth/change.
+- **E: Line + bullet insights below** — Compact chart top, three insight bullets underneath.
+- **G: Big stat hero + line below** — Large current value, smaller trend chart underneath.
+- **H: Small multiples (side by side)** — Separate charts in cards, fixed y-axis across panels.
+- **I: Line + accent band callout** — Chart top, insight callout in emphasis band below.
+- Avoid dual y-axes unless absolutely necessary; if used, label both clearly
+- Area charts work well for cumulative or volume-based trends. No gridlines. Fill opacity 15–20%.
+
+**Area chart — PPTX layouts** (7 approved, agent chooses based on content):
+- **A: Single area, cumulative** — One series with transparent fill. Default for volume/cumulative trends.
+- **B: Two series, overlapping** — Both areas at 20% opacity, direct end labels. Max 2 series.
+- **C: Area + stat card right** — Chart left, total callout card right.
+- **E: Area + bullet insights below** — Compact chart top, three insight bullets underneath.
+- **G: Big stat hero + area below** — Large total value, smaller trend chart underneath.
+- **H: Small multiples (side by side)** — Separate charts in cards, fixed y-axis across panels.
+- **I: Area + accent band callout** — Chart top, insight callout in emphasis band below.
+- Waterfall charts: only use when specifically requested — see rules below. One approved PPTX layout:
+  - **A: Standard waterfall** — Vertical bars with connector lines, delta labels above/below, colour legend below. Full-width chart. Do not combine with stat cards, bullets, or accent bands — waterfalls need the full slide width to avoid cramping.
+
+**Waterfall chart: when to use**
+- Only use a waterfall chart when a user explicitly requests one
+- Waterfall charts are appropriate for showing how a starting value is built up or eroded by a series of positive and negative contributions to arrive at a final total — e.g. revenue bridges, NPS score shifts, budget breakdowns
+
+**Waterfall chart: colour conventions** *(Voxpopme conventions)*
+- Gains: Teal `#58B999` — consistent with positive sentiment across all chart types
+- Losses: Lilac `#95569E` — never red. Red/green combinations are indistinguishable for deuteranopia users
+- Start and end totals: Dark Purple `#341C4C` — anchors the chart and signals "cumulative total, not a delta"
+- Never use red and green together in a waterfall chart — this is the most common violation and fails WCAG 1.4.1
+
+**Waterfall chart: labels and connectors**
+- Show delta labels on every bar — +value above gains, −value below losses. Dark grey `#343845` text
+- Delta labels are the primary encoding — colour supplements them, never replaces them
+- Draw dashed connector lines between bars showing the running total — without connectors, floating bars lose their context entirely
+- Insight-led title must state the net outcome: "Revenue grew from £2.0M to £2.8M" not "Q3 to Q4 waterfall"
+
+**Line chart: multi-series differentiation**
+- Never rely on colour alone to differentiate multiple lines — always add a secondary encoding
+- Use distinct line styles per series: solid, dashed, dotted
+- Use distinct marker shapes per series: circle, square, triangle, diamond
+- Combine both — a dashed line with triangle markers is unambiguous even in greyscale or for colour-blind users
+- Use a neutral palette for most series with one or two accent colours to highlight the most important series
+- Maximum 4 series on a single chart *(Voxpopme convention — not a specific research figure)* — beyond 4, use small multiples
+
+**Line chart: labels and annotations**
+- Place direct text labels at the end of each line rather than relying on a distant legend
+- Use point annotations to explain outliers, peaks, or turning points directly on the chart — limit to one sentence per annotation
+- Use vertical reference lines to mark key dates or events — a line alone is sufficient, text label is optional
+- Use shaded range bands to highlight specific time periods without dense text
+- Maximum 3 annotations per chart *(Voxpopme convention)* — more than 3 annotations compete with each other and the data
+- Never leave an anomaly unexplained — always annotate it
+
+**Line chart: visual clarity**
+- Straight line segments are the default — do not use smooth curves (bezier/tension). Curved lines imply data exists between known points, which misrepresents the actual measurements *(Voxpopme convention)*
+- Minimum stroke width: 2px for all lines; 2.5–3px for the primary series in multi-series charts *(Voxpopme convention — research only mandates 3:1 contrast, not a pixel width)*
+- Maximum 10 light-grey gridlines per axis — remove heavy background shading
+- Do not fill the area under a line unless the cumulative volume is the message (use an area chart instead)
+- Maximum 24 visible data points before recommending pre-aggregation or zoom interaction *(Voxpopme convention)*
+
+**Line chart: interactivity (Compass dashboard context)**
+- Use grouped tooltips: when a user hovers over any x-position, show values for all series at that point — not individual point tooltips
+- Support zoom and pan: scroll-wheel or pinch zoom constrained to the x-axis (temporal), drag-to-pan, and brushing (drawing a rectangle to zoom into a specific time range)
+- For multi-series charts: provide interactive toggles (legend checkboxes) to show or hide individual series — required on mobile
+- All interactive controls must be keyboard-operable and have visible focus states
+
+**Line chart: mobile adaptation**
+- Series toggles are required on mobile for multi-series charts — users cannot distinguish overlapping lines at small sizes
+- Text labels must auto-abbreviate on small screens (e.g. "January" → "Jan")
+- Axis intervals must simplify dynamically as the viewport shrinks
+- Annotations and reference lines must reposition or move behind touch tooltips to avoid overlap
+
+**Line chart: accessibility**
+- ARIA hierarchy (same structure as bar and donut): `role="graphics-document"` on root, `role="graphics-object"` on groupings (axes, legend), `role="graphics-symbol"` + `aria-roledescription="data point"` on each plotted node
+- HTML data table fallback is required — provide a visible "Show data table" toggle button so users can switch between the chart and a structured table. The toggle must be visible by default, not hidden *(Voxpopme convention — research mandates the table but does not specify default visibility)*
+
+**Area chart: when to use** *(Voxpopme conventions — research lists area charts alongside line charts but provides no decision rules)*
+- Use an area chart when the filled volume itself is meaningful — e.g. cumulative totals, capacity utilisation, coverage over time
+- Use a line chart when the trend shape is the message and the volume between points is not relevant
+- For multiple overlapping area series: use 0.15–0.20 opacity on fills so layers do not obscure each other
+- Stacked area charts: only use with 3 or fewer series and only when the cumulative total is the primary message — otherwise use small multiples
+- Never use a stacked area chart when individual series values need to be read accurately
+
+**Area chart: interactivity (Compass dashboard context)**
+- Support zoom and pan across plotted areas — scroll-wheel or pinch zoom, drag-to-pan. Same interaction pattern as line charts
+- All other line chart interaction rules apply: grouped tooltips, keyboard operability, visible focus states
+
+### Part-to-Whole Composition
+**Use:** Horizontal bar charts (default), stacked bar charts, or card-based percentage layouts
+**When:** Showing how segments contribute to a total
+**Rules:**
+- **Default to horizontal bars or percentage cards** for composition data. These are more accessible, easier to label, and work at any segment count.
+- **Do not use donut or pie charts unless the user explicitly requests one.** Donut/pie charts have persistent accessibility problems in PPTX: PptxGenJS data labels render on segments (failing colour contrast), leader lines overlap content, and small segments are unreadable. Horizontal bars with percentages communicate the same data more clearly.
+- Stacked bar charts: only use with 3 or fewer segments — 4 segments is a borderline case, only acceptable when segments are clearly distinct in size
+- Pie charts: only when explicitly requested — apply all pie rules below. Four approved PPTX layouts:
+  - **A: Pie left + card legend right** — Cards with colour left bar and bold percentages. Default pie layout.
+  - **G: Pie in card + full-width legend rows** — Pie inside a card, legend rows beside it.
+  - **H: Pie in card + numbered legend** — Numbered colour badges linking segments to descriptions.
+  - **I: Accent band pie** — Pie on emphasis-colour band, white text legend.
+- Donut charts: only when explicitly requested — limit to 5 segments, disable PptxGenJS data labels, use external legend only, centre stat must be mathematically centred (`chartX + chartW/2, chartY + chartH/2`). Four approved PPTX layouts:
+  - **A: Donut left + card legend right** — Cards with colour left bar and bold percentages. Default donut layout.
+  - **G: Donut in card + full-width legend rows** — Donut inside a card, legend rows beside it.
+  - **H: Donut in card + numbered legend** — Numbered colour badges linking segments to descriptions.
+  - **I: Accent band donut** — Donut on emphasis-colour band, white text legend.
+- NEVER use 3D charts of any kind
+
+**Stacked bar chart — PPTX layouts** (6 approved, agent chooses based on content):
+- **A: Single bar + legend below** — Clean minimal. Legend: dot · name (grey) · % (bold). Default choice.
+- **B: Bar + stat cards below** — Three cards with big percentage, colour left bar, and label.
+- **D: Before/after comparison** — Two bars with delta values in legend (arrow notation). Best for showing change.
+- **F: Big stat hero + bar below** — Large percentage callout with bar for context. High impact.
+- **G: Deconstructed (separate bars)** — One bar per segment with grey track. Easier to compare exact values.
+- **I: Percentage cards (no bar)** — Card-based alternative with mini progress bars. Best when exact values matter more than proportion.
+
+**Stacked bar chart: labels and legend**
+- Never place labels inside segments — white text on coloured fills is unreliable at any segment size *(Voxpopme convention)*
+- Place all values in the legend key beneath the chart — not inside or above the bars
+- Legend format: colour dot · category name (muted grey) · percentage (bold dark grey `#343845`)
+- Never use coloured text in the legend — the dot carries the colour. Label and percentage text must both be dark grey for readability at small sizes
+- Centre the legend horizontally beneath the chart
+- For before/after comparisons: show both values in the legend key — e.g. "Gifting **31% → 48%**"
+
+**Stacked bar chart: colour**
+- Never use red and green together in the same stacked bar — indistinguishable for deuteranopia users (most common colour blindness type)
+- Use the Voxpopme brand sequence for non-sentiment stacked bars: Purple `#341C4C` → Lilac `#95569E` → Teal `#58B999` → Grey `#5B666F`
+- For sentiment stacked bars only: use fixed sentiment fills — Positive `#58B999`, Neutral `#F69C35`, Negative `#FF0054`
+- Add white borders (2px) between adjacent segments for colour-independent separation
+
+**Pie chart: when to use**
+- Only use a pie chart when a user explicitly requests one — always offer a donut or horizontal bar chart as a better alternative first
+- A donut chart is almost always preferable: it adds a centre stat with no extra cognitive cost
+- A horizontal bar chart is preferable when values are similar or there are more than 5 categories
+
+**Pie chart: rules (apply all when pie is required)**
+- Maximum 5 slices *(Voxpopme convention — research says "avoid many" without specifying a number)*
+- Never use when slice values are similar (within ~5% of each other) — arcs become indistinguishable
+- Label percentages and category names outside each slice with a leader line — internal white text is difficult to read on smaller slices. External labels are always clearer
+- White borders (2px) between all adjacent slices — required for colour-independent separation
+- No 3D effects, extrusions, drop shadows, or artificial depth — ever
+- Accessible HTML data table fallback required with `<caption>` and `<th>` headers — provide a visible "Show data table" toggle
+- In interactive dashboards: clicking a slice cross-filters the rest of the dashboard to that category — must be keyboard-operable
+
+**Donut chart: centre stat**
+- Always place the most practically significant figure in the centre hole — this applies progressive disclosure by surfacing the headline metric before the detail
+- The centre stat should be the most actionable number: the dominant segment value, a key total, or a headline metric — not necessarily the largest segment if another figure is more meaningful
+- Open question (no research consensus yet): whether leaving the centre empty is ever preferable, and whether the largest segment should always start at 12 o'clock
+
+**Donut chart: sentiment colour rule**
+- Voxpopme sentiment colours (#58B999, #FF0054, #F69C35) are fixed and must never be repurposed
+- Familiarity with sentiment colours does NOT exempt them from accessibility rules — colour blindness affects these fills regardless of how well-known they are
+- Always pair sentiment fills with text labels ("Positive", "Negative", "Neutral") — never rely on colour recognition alone
+
+### Correlation and Multi-Variable Relationships
+**Use:** Scatter plots, heatmaps, bubble charts
+**When:** Exploring relationships between two or more variables
+
+**PPTX restriction:** Do not use scatter plots, bubble charts, or heatmaps in presentations. PptxGenJS renders scatter points without visible markers, and these chart types require interactivity (hover tooltips, zoom) to be useful. For correlation data in PPTX, use a Big Stat slide (r² value) or Key Findings slide to state the relationship in text. Scatter plots and heatmaps are for Compass dashboards only.
+
+**Rules (Compass dashboard context only):**
+- Scatter plots: label axes clearly; add a trend line if correlation is the main message
+- Bubble charts: limit to 3 variables (x, y, size); avoid overplotting
+- Heatmaps: use sequential or diverging colour scales, not categorical ones
+
+**Heatmap: audience and use**
+- Only use a heatmap when a user explicitly requests one — always consider whether a grouped bar chart, small multiples, or a table would communicate the same information more clearly for a low data-literacy audience
+- Heatmaps require users to interpret colour intensity across two dimensions simultaneously — this is a high cognitive load for non-expert users
+- Use with the same caution as scatter plots and box plots — they are not appropriate as a default choice for mixed audiences
+
+**Heatmap: colour scale**
+- Use a sequential scale (one colour, light = low, dark = high) for single-metric heatmaps — Lilac `#95569E` is the default Voxpopme base colour *(Voxpopme convention)*
+- Use a diverging scale (two colours meeting at a meaningful midpoint) only when data has a true neutral centre — e.g. above/below target, positive/negative change
+- Maximum 5–6 distinct colour stops — more creates perception noise
+- Never use a categorical colour scale (different hues per cell) — categorical colour implies different categories, not a continuous metric
+- Never rely on colour alone — supplement with cell value labels (in presentations) or hover tooltips (in Compass)
+
+**Heatmap: cell labels and contrast**
+- In presentations (PPTX): show all cell values statically — tooltips are not available in print or slide contexts
+- In Compass (interactive): use progressive disclosure — keep the main view clean and reveal exact values on hover via rich tooltips
+- Text contrast inside cells: the 4.5:1 rule applies — this is text, not a graphical object
+- Text colour threshold *(Voxpopme convention)*: use white text `#FFFFFF` when the cell background is at or above 50% opacity of the scale; use dark grey `#343845` when lighter. Always verify mathematically — do not rely on visual judgement alone
+- Add borders between adjacent cells to assist colour-independent separation
+
+**Heatmap: annotations**
+- Always annotate the highest and lowest value cells directly on the chart — these are the primary insight anchors
+- Outlier cells should be visually distinguished with a border or callout, limited to one sentence
+- Include outlier context in the accessible long description via `aria-describedby`
+
+**Heatmap: interactivity (Compass dashboard context)**
+- Hover tooltips: show exact cell value, row label, column label, and any relevant context
+- Zoom and pan for large grids
+- Brushing: select a range of cells to filter linked charts
+- Click on a cell: cross-filter linked dashboard modules or trigger a drill-down drawer
+- All interactive controls must be keyboard-operable with visible focus states
+
+**Heatmap: accessibility**
+- `role="graphics-document"` on the chart root, `role="graphics-object"` on row/column groupings, `role="graphics-symbol"` + `aria-roledescription="cell"` on each individual cell
+- HTML data table fallback required — provide a visible "Show data table" toggle
+- Supplement colour scale with a visible legend showing the scale range and midpoint
+- Test the colour scale using a colour-blindness simulator before finalising
+
+**Scatter plot: audience and use**
+- Use with caution for low data-literacy audiences — scatter plots require users to hold two variables in mind simultaneously. Bar and line charts are the default for mixed or non-expert audiences
+- Scatter plots are appropriate when the relationship or correlation between two variables is the primary question
+- Minimum sample size: no research-specified threshold — as a Voxpopme convention, avoid scatter plots with fewer than 20 data points. Below this, a table or annotated bar chart communicates the same information more clearly *(Voxpopme convention)*
+- Scatter plot axes do NOT need to start at zero — the zero-baseline rule applies only to bar and column charts. Set axis ranges to the data range with appropriate padding
+
+**Scatter plot: labelling and annotations**
+- Do not statically label individual data points — this creates cognitive overload on dense charts
+- Use rich hover tooltips instead: show exact x/y values, the corresponding dimension or label, and jargon explanations on demand
+- Outliers must not be excluded — annotate them directly on the chart with a one-sentence explanation
+- Include outlier context in the accessible long description via `aria-describedby` on the chart container
+
+**Scatter plot: trend lines** *(Voxpopme conventions — no research guidance provided)*
+- Include a linear trend line when correlation direction is the primary message
+- Use a curved (polynomial) trend line only when the relationship is clearly non-linear and the audience is data-literate
+- Always label the trend line directly — do not rely on a legend entry alone
+- Do not add a trend line if the data is too sparse or the correlation is not meaningful
+- Clip trend lines strictly to the data range — never extrapolate beyond the observed data. Extrapolation implies prediction and requires confidence intervals to be honest
+- When correlation strength matters, show the R² value as a small annotation near the trend line label — one number only, no statistical explanation
+- If the chart includes AI-generated predictive overlays, confidence intervals must be shown transparently (see Rule 3)
+
+**Scatter plot: point size and overplotting** *(Voxpopme conventions — no research guidance provided)*
+- Default point radius: 5–6px
+- For dense plots (50+ points): reduce to 3–4px and apply 0.6–0.7 opacity to reveal overlapping points
+- For very dense plots (200+ points): use 0.3–0.4 opacity — or switch to a heatmap. Research groups scatter plots and heatmaps together for correlation use cases; 200+ points is the Voxpopme threshold for switching
+- Never reduce points below 3px — too small to interact with on touch devices
+- For categorical x-axis scatter plots: add jitter (small random horizontal offset) to prevent points stacking directly on top of each other *(Voxpopme convention)*
+- For 500+ points: consider hex binning as an alternative to individual point rendering *(Voxpopme convention)*
+
+**Scatter plot: layout and aspect ratio** *(Voxpopme conventions — no research guidance provided)*
+- Use a square or near-square aspect ratio (1:1 to 4:3) — distorting the aspect ratio artificially changes the perceived angle of a correlation and can mislead users about the strength of a relationship
+- When using small multiples for scatter plots, fix axis scales consistently across all panels — varying scales make visual comparisons between panels misleading
+
+**Scatter plot: multi-group**
+- Differentiate groups using both colour AND distinct geometric marker shapes — never colour alone
+- Maximum 5–6 groups on a single chart — beyond this, use small multiples
+- Show/hide toggles are legend checkboxes — place them directly in the legend, not as a separate filter control (confirmed by research)
+
+**Scatter plot: interactivity (Compass dashboard context)**
+- Hover tooltips: show all relevant values for that point — do not require clicks to see basic data
+- Zoom and pan: scroll-wheel or pinch zoom, drag-to-pan
+- Brushing: users can draw a selection rectangle to zoom into a range or filter linked charts
+- Click on a data point: cross-filter linked dashboard modules or trigger a drill-down detail drawer
+- All interactive controls must be keyboard-operable with visible focus states
+
+**Scatter plot: accessibility**
+- `role="graphics-document"` on the chart root, `role="graphics-object"` on groupings (axes, groups), `role="graphics-symbol"` + `aria-roledescription="data point"` on each plotted point
+- Include outlier annotations in the accessible long description via `aria-describedby`
+- HTML data table fallback required with `<caption>` and `<th>` headers — provide a visible "Show data table" toggle
+- For large datasets (200+ points): the data table should show pre-aggregated summary data, not raw rows. Rendering thousands of rows in a table creates its own accessibility and performance problem
+
+### Data Distribution and Density
+**Use:** Histograms, box plots, violin plots, dot plots
+**When:** Showing spread, skew, outliers, or frequency of values
+**Rules:**
+- Histograms: choose bin width intentionally
+- Box plots: good for comparing distributions across groups
+- Violin plots: only use with data-literate audiences
+
+### Complex or Dense Data
+- Use **small multiples** instead of one overloaded chart
+- Never sacrifice clarity for completeness
+
+**Small multiples — PPTX layouts** (5 approved, agent chooses based on panel count and chart type):
+- **A: 2×2 line chart grid** — Four line charts in cards, fixed y-axis across all. Default for 4 groups.
+- **B: 4-across in a row** — Four narrow panels in one row with current value below each. Compact.
+- **C: 2×2 horizontal bar grid** — Four bar chart panels, one per segment. Good for category comparisons across groups.
+- **D: 3-across** — Three wider panels in a row. Best for exactly 3 groups.
+- **H: 2×2 sentiment bar grid** — Four stacked sentiment bars, one per topic. Best for multi-topic sentiment comparison.
+
+---
+
+## Rule 2: Plain Language Summaries
+
+Every chart must be accompanied by a plain language summary. Never leave the user guessing at the conclusion.
+
+**Summary rules:**
+- Lead with the **insight, not the data**. State the analytical conclusion first. Example: "Satisfaction dropped 12 points in Q3" not "Q3 satisfaction scores vs Q2"
+- Limit each chart to **one or two main ideas**. Strip any data that doesn't support the primary question
+- Treat every chart as a **question-answer unit**: one question, one answer, one chart
+- **Chart titles must state the conclusion**, not describe the metrics. "Customer satisfaction is declining" not "Customer satisfaction over time"
+- Use **static annotations directly on the chart** to explain anomalies, spikes, or drops (e.g. "Scheduled maintenance outage"). Never leave unexplained anomalies — users will interpret them as crises
+- Place the plain text summary **near the chart**, not separated from it
+
+**Progressive disclosure:**
+- Show the headline insight first
+- Provide supporting data beneath or on demand
+- Reserve exact values, variance calculations, and jargon definitions for tooltips or footnotes
+
+---
+
+## Rule 3: Trust and Source Attribution
+
+Charts used for business decisions must include attribution. Transparency is the foundation of trust.
+
+**Always include on the chart:**
+- Project or study name
+- Sample size (e.g. n=342)
+- Data collection date or date range
+
+**Additional rules:**
+- Standardise KPI definitions across all charts. If a metric means different things in different places, users will lose trust in the data
+- If a chart includes AI-generated or predictive data, show confidence intervals transparently
+- Use static annotations to explain data anomalies rather than leaving users to interpret them
+- Never omit source information to keep a chart looking cleaner — trust outweighs aesthetics
+
+---
+
+## Rule 4: Reducing Misinterpretation Risk
+
+Design decisions that reduce the risk of users drawing wrong conclusions.
+
+**Highlight practical significance, not statistical significance:**
+- Do not flag every minor fluctuation. Users will treat normal variation as an urgent problem (alert fatigue)
+- Only elevate metrics with practical, actionable significance to the primary view
+
+**Eliminate biological pitfalls:**
+- Never use 3D effects — humans cannot accurately read 3D angles
+- Never use pie charts with similar-value slices — humans judge lengths better than angles
+- Never rely on colour alone (e.g. red/green traffic lights) to convey meaning — colour-blind users will misread or miss the data entirely. Always add patterns, textures, or direct labels as a secondary encoding
+
+**Standardise across the product:**
+- Use a unified design system and consistent KPI definitions
+- Inconsistency across charts creates "multiple truths" and organisational misalignment
+
+---
+
+## Rule 5: Cognitive Load
+
+A low data-literacy user should be able to scan a chart and understand it in under 10 seconds.
+
+**Per chart:**
+- One or two main ideas maximum
+- Remove all chartjunk: 3D effects, drop shadows, unnecessary borders, background shading, decorative elements
+- Use a maximum of 10 light-grey gridlines per axis
+- Label data directly on the chart where possible — do not rely on a distant legend
+
+**Per dashboard or primary view:**
+- Maximum 5 to 7 core KPIs visible at once
+- Apply the pattern: **overview first → zoom and filter → details on demand**
+- Keep the initial view to high-level summaries only
+- Exact values, breakdowns, and jargon definitions go in tooltips or secondary views
+
+**When data is too complex for one chart:**
+- Use small multiples
+- Split into separate charts rather than adding more series to one
+
+---
+
+## Rule 8: KPI Cards (Big Number Stats)
+
+KPI cards are the entry point to a dashboard. They show a single headline metric with enough context for the user to immediately understand whether that number is good or bad.
+
+**Core principle: never show a number in isolation.** A standalone number is uninterpretable. Every KPI card must include all three of the following:
+1. The headline metric (large, bold, prominent)
+2. A delta showing change vs a previous period or target
+3. A sparkline or trend indicator showing recent historical pattern
+
+**Headline number**
+- Minimum font size: 32px *(Voxpopme convention — research mandates large bold placement but specifies no exact size)*
+- The headline number must always be the largest element on the card
+- The headline number colour matches the delta state — number and delta tell the same story and must be visually consistent *(Voxpopme convention)*
+- Include the unit clearly (%, £, n=) — never make the user guess what the number represents
+
+| Card state | Headline number | Delta colour | Arrow |
+|---|---|---|---|
+| Positive | Dark Teal `#2E7D60` | Dark Teal `#2E7D60` | ↑ |
+| Negative | Dark Red `#C4004A` | Dark Red `#C4004A` | ↓ |
+| Neutral | Mid Grey `#5B666F` | Mid Grey `#5B666F` | — |
+
+**Deltas and variance**
+- Always show a delta — year-over-year, vs target, or vs previous period
+- Show percentage delta by default. Show absolute delta as secondary information (smaller text or in a tooltip) *(Voxpopme convention)*
+- Threshold for display: only show as a flagged change if it crosses 5% practical significance *(Voxpopme convention — research warns against alert fatigue from flagging every fluctuation)*
+- Delta colour conventions:
+  - Positive growth: Teal `#58B999` (or Dark Teal text `#2E7D60`)
+  - Risk / decline: Red `#FF0054` (or Dark Red text `#C4004A`)
+  - Neutral / within normal range: Mid Grey `#5B666F` — no accent colour, no arrow
+- Delta colour must ALWAYS be supplemented with a directional arrow icon — ↑ for positive, ↓ for negative, — for neutral. Colour alone fails WCAG 1.4.1
+
+**Benchmarks and targets**
+- Always show the target or benchmark — do not hide it when performance is on-track. The target provides essential context regardless of current performance
+- Indicate the target as a dashed horizontal reference line on the sparkline plus a small "vs target" delta label *(Voxpopme convention)*
+- Show the variance from target clearly — e.g. "+8% vs target" or "−3% below target"
+
+**Sparklines**
+- Every KPI card should include a sparkline showing the last 12 periods by default *(Voxpopme convention)*
+- Sparklines follow line chart rules: straight segments, no fill, no smooth curves
+- Sparklines do not need labelled axes — they are purely contextual trend indicators, not precise reading tools
+- Sparkline stroke: 1.5–2px, Lilac `#95569E` or the metric's accent colour
+- Do not add data point markers to sparklines — keep them clean
+
+**Placement and layout**
+- Place KPI cards at the top or upper-left of any dashboard — F-pattern scanning means this is where users look first
+- Maximum 5–7 KPI cards in a primary view — beyond this, users cannot scan in under 10 seconds
+
+**Interaction**
+- KPI cards must be clickable and trigger a drill-down to a full time-series view or detail drawer
+- The clickable affordance must be visible — hover state, cursor change, or explicit "View details" label
+- Drill-down must be keyboard-operable (Enter/Space) with a visible focus indicator
+
+**Accessibility**
+- Use semantic HTML: the headline number in a `<p>` or `<span>` with a descriptive `<h3>` or `aria-label`
+- For real-time updating metrics: use `aria-live="polite"` so screen readers announce changes without interrupting
+- Delta tooltips: use `role="tooltip"` + `aria-hidden="true"` on decorative tooltip triggers; the tooltip content must be accessible via keyboard
+- Delta arrow icons: mark as `aria-hidden="true"` if the text label already conveys direction — do not double-announce
+
+---
+
+Charts must be usable by everyone, including users with colour vision deficiencies. These rules are non-negotiable — they apply to every chart, every surface.
+
+### The golden rule
+**Never rely on colour alone to convey information.** WCAG 2.1 criterion 1.4.1 requires that colour is never the only visual means of conveying meaning. This applies to every chart without exception.
+
+**Common violations to avoid:**
+- Traffic light schemes (red/green) — indistinguishable for deuteranopia users (most common colour blindness type)
+- Diverging charts where direction is encoded only by colour (e.g. teal = positive, coral = negative) — must add +/- labels directly on bars
+- Multi-series charts where series are differentiated only by colour — must add line style, marker shape, or pattern
+
+**Always supplement colour with:**
+- Direct text labels on bars, slices, or lines (preferred over a distant legend)
+- Varying line styles (solid, dashed, dotted) for multi-series line charts
+- Distinct geometric marker shapes for scatter/line data points
+- Patterns or hatching for stacked or adjacent bars where space allows
+- Borders between adjacent colour blocks (especially stacked bars and donut segments)
+
+### Contrast ratios (WCAG 2.1 / 2.2)
+These are minimums — not targets. Verify all chart elements before finalising.
+
+| Element | Minimum ratio |
+|---|---|
+| Standard text (labels, legends, annotations) | 4.5:1 |
+| Large text (≥18pt or ≥14pt bold) | 3:1 |
+| Graphical objects (bars, lines, pie slices, chart borders) | 3:1 |
+| High-contrast / dark mode (recommended) | 7:1 |
+
+**Palette depends on output context. Always establish context before applying colour.**
+
+---
+
+### Context A: Compass chat (in-product UI)
+
+Charts rendered inside Compass use the Voxpopme UI design system on white/light backgrounds.
+
+#### Non-sentiment bars
+| Name | Hex | Use for | Contrast on white |
+|---|---|---|---|
+| Lilac | #95569E | All bars — default fill | 4.6:1 PASS |
+| Dark Purple | #341C4C | Labels, rank icons, axis text | 14.2:1 PASS |
+| Mid Grey | #5B666F | Secondary labels, source lines | 5.87:1 PASS |
+| Dark Grey | #343845 | Primary data labels on bars | 11.68:1 PASS |
+| Track | #E8E4ED | Bar tracks, chart backgrounds | — |
+
+#### Sentiment bars
+| Sentiment | Bar fill | Text on white | Rule |
+|---|---|---|---|
+| Positive | #58B999 | #2E7D60 | Always pair with "Positive" text label |
+| Negative | #FF0054 | #C4004A | Always pair with "Negative" text label |
+| Neutral | #F69C35 | #9E6710 | Always pair with "Neutral" text label |
+
+**Critical:** Never put white text inside sentiment-coloured bars — all three fail WCAG contrast.
+
+#### Surfaces
+| Name | Hex | Use for |
+|---|---|---|
+| White | #FFFFFF | Card backgrounds |
+| Background Light | #F7F5FA | Subtle chart backgrounds, row alternation |
+
+#### Diverging (Compass)
+Use Lilac (`#95569E`) for above-baseline, Mid Grey (`#5B666F`) for below. Always add +/− text labels directly on bars.
+
+---
+
+### Context B: Presentations (PPTX export)
+
+Charts exported to PowerPoint follow the Voxpopme PPTX design system. Slide backgrounds vary (white content slides, purple header slides) so colour choices must account for both.
+
+#### Non-sentiment bars — on white slides
+Same as Compass: Lilac `#95569E` bars, Dark Grey `#343845` labels.
+
+#### Non-sentiment bars — on purple slides (`#341C4C` background)
+| Name | Hex | Use for |
+|---|---|---|
+| Teal | #58B999 | Bar fill on purple background |
+| White | #FFFFFF | Data labels on bars |
+| Light Lilac | #C8A2CE | Secondary labels (≥14pt bold only) |
+
+**Never use Lilac (`#95569E`) on a purple background** — it disappears. Switch to Teal or White.
+
+#### Sentiment bars — presentations
+Same fills as Compass (`#58B999`, `#FF0054`, `#F69C35`). On purple slide backgrounds, use white text labels — not the dark text variants, which will fail against dark backgrounds.
+
+#### Diverging — presentations
+On white slides: Lilac for above, Mid Grey for below, +/− labels in Dark Grey.
+On purple slides: Teal for above, Light Lilac for below, +/− labels in White.
+
+---
+
+### Shared rules (both contexts)
+**Critical:** Never put white text inside sentiment-coloured bars on white/light backgrounds — all three fills fail WCAG contrast. Use dark text variants (`#2E7D60`, `#C4004A`, `#9E6710`) for labels on or near sentiment fills on light backgrounds.
+
+### Palette restraint
+- Maximum 5 to 6 distinct colours per visualisation — never more
+- Use a neutral base colour for the majority of bars/lines; use accent colour only for the data point that matters most
+- Do not cycle through all available colours decoratively — colour must encode meaning, not sequence
+- Prefer one strong accent on a neutral base over equal weight across many colours
+
+### Keyboard and screen reader (interactive charts)
+- Every interactive control must be fully keyboard-operable (Tab and Enter)
+- Tab order must follow logical visual hierarchy
+- Every interactive element must display a visible focus indicator
+- Alt text must state the key insight and trend explicitly, not just describe the chart type
+  - Good: "Bar chart of monthly sales showing 20% growth over the period"
+  - Bad: "Bar chart"
+
+### ARIA semantics for bar charts (SVG and canvas)
+- Individual bars: `role="graphics-symbol"` + `aria-roledescription="bar"`
+- Grouped bars (multi-series): wrap each group in `role="graphics-object"`
+- The chart container should carry the descriptive alt text as `aria-label`
+
+### ARIA semantics for donut charts (SVG and canvas)
+The full WAI-ARIA Graphics Module hierarchy must be applied:
+- Chart root container: `role="graphics-document"` + `aria-label` with the insight-led description
+- Intermediate groupings (e.g. legend): `role="graphics-object"`
+- Individual slices: `role="graphics-symbol"` + `aria-roledescription="slice"` + `aria-label` with segment name and value
+- HTML data table fallback: every donut chart must be paired with a visually hidden but screen-reader-accessible `<table>` containing the same data. This is required — the visual chart alone is not sufficient for screen reader users
+
+### Mobile adaptation
+- On small screens, multi-column bar charts must pivot to a vertical single-column list view
+- Do not simply scale down a multi-column layout — bars become too narrow to read or tap
+- Horizontal bar charts generally adapt better to mobile than vertical column charts — prefer horizontal when the chart may be viewed on mobile
+
+### Bar charts as interactive filters (Compass dashboard context)
+- In interactive dashboards, clicking a bar can filter the entire view to that category
+- A bar click can also trigger a drill-down that opens a deeper view or detail drawer
+- If a bar is clickable, it must have a visible hover/focus state and be keyboard-operable
+- The interactive behaviour must be communicated — do not rely on users discovering it by trial and error. Use a tooltip, label, or UI affordance to indicate the bar is actionable
+
+---
+
+## Rule 7: Visual Hierarchy and Layout
+
+Guide the user's eye deliberately. Don't leave them hunting for the most important information.
+
+**Hierarchy rules:**
+- Use consistent typography, size, position, and colour emphasis to create a clear focal point on every chart
+- The most important number or insight should be the largest, most prominent element on the chart
+- Supporting data, labels, and source attribution should be visually subordinate
+
+**Layout rules:**
+- Place the most critical information and highest-priority visuals in the upper-left of any dashboard or multi-chart layout — this aligns with natural F-pattern scanning behaviour
+- Within a single chart, the title (which states the conclusion) is read first — make it count
+
+**Chart title rules (confirmed):**
+- Titles MUST state the analytical conclusion, not describe the data
+- Good: "Customer satisfaction has declined three quarters in a row"
+- Bad: "Customer satisfaction score by quarter"
+- If you cannot state a conclusion in the title, the chart is not ready — either the data story is unclear or the chart needs to be simplified further
+
+---
+
+## PPTX Chart Checklist (run before delivering any presentation)
+
+1. Does the chart title state an insight, not describe the data?
+2. Is the title ≤52 characters (including spaces), single line?
+3. Does the quantitative axis start at zero (bar charts)?
+4. Is source, sample size, and date included (on slide or in speaker notes)?
+5. Is colour supplemented with text labels — never colour alone?
+6. Do all text elements meet 4.5:1 contrast? All graphical objects 3:1?
+7. Are gridlines disabled on line and area charts?
+8. For sentiment bars: are all labels outside the bar — never inside?
+9. For sentiment bars with extreme skew (<15% combined): labels in centred row below?
+10. For horizontal bars: is spacing calculated dynamically from bar count?
+11. For stacked bars: are labels in the legend below — never inside segments?
+12. For donut/pie (if requested): are PptxGenJS data labels disabled, external legend only?
+13. Is the source line positioned dynamically — not at a hardcoded y?
+14. For dense grids (2×2, quote grids): is source in speaker notes?
+15. For small multiples: are axis scales fixed across all panels?
+
+---
+
+## Compass Dashboard Checklist (run before shipping interactive charts)
+
+1. Does the chart title state an insight, not describe the data?
+2. Is source, sample size, and date included?
+3. Is colour supplemented with a secondary encoding (label, pattern, shape, line style)?
+4. Do all text elements meet 4.5:1 contrast? All graphical objects 3:1?
+5. Is every interactive control keyboard-operable (Tab + Enter)?
+6. Does every interactive element have a visible focus indicator?
+7. For bar charts: do bars have `role="graphics-symbol"` + `aria-roledescription="bar"`?
+8. For donut charts: is the full ARIA hierarchy applied (`graphics-document` → `graphics-object` → `graphics-symbol`)?
+9. For donut/pie charts: is there an accessible HTML data table fallback?
+10. For line charts (interactive): do tooltips show all series at the hovered x-position?
+11. For line charts: is there a visible "Show data table" toggle?
+12. For scatter plots: are groups differentiated by colour AND marker shape?
+13. For KPI cards: does every card have headline number + delta + sparkline?
+14. For KPI cards: is `aria-live="polite"` applied for real-time updates?
+15. On mobile: does a multi-column chart pivot to single-column?
+
+---
+
+## PPTX Export Rules
+
+These rules apply when charts are rendered inside PowerPoint presentations using PptxGenJS.
+
+### Sentiment stacked bar — PPTX layouts
+
+Six approved layouts. Agent chooses based on content and deck context:
+- **B: Bar + stat cards below** — Three cards with big percentage, colour left bar, and label. Default for single-topic sentiment.
+- **C: Bar + bullet insights** — Legend row + three bullets explaining each sentiment driver. Best when context matters.
+- **D: Bar in card container** — Everything inside a card with colour squares and label/percentage. Structured feel.
+- **E: Three separate bars** — One horizontal bar per sentiment. Easier to compare exact values.
+- **G: Big stat + centred bar** — Large positive percentage hero, smaller bar below for context. High impact.
+- **H: Multi-topic comparison** — Multiple topics stacked, each with its own sentiment bar. Shows patterns across categories.
+
+### Sentiment bar — PPTX label rules
+
+**Label positions — always outside the bar.** PptxGenJS cannot render text reliably inside narrow bar segments. All three sentiment labels must be placed outside the bar, regardless of segment width.
+
+**Normal distribution** (all segments > ~15% each):
+- **Positive** label: above the bar, left-aligned, dark teal text `#2E7D60`
+- **Neutral** label: below the bar, positioned under the neutral segment, dark orange text `#9E6710`
+- **Negative** label: above the bar, right-aligned, dark red text `#C4004A`
+
+**Extreme skew** (any two segments combined < 15%):
+- All three labels in a single horizontal row below the bar, **centred as a group** across the slide width
+- Evenly spaced: Positive left, Neutral centre, Negative right — each in their dark accessible text colour
+- This prevents label collision when two segments are tiny and stacked at one end of the bar
+
+**Text summary** is always required below the labels: "X% Positive | Y% Neutral | Z% Negative" in bold primary colour.
+
+### Horizontal bar chart — PPTX specific
+
+- Use the **category colour palette** (`#8A65D1`, `#0069B4`, `#F69C35`, `#FF0054`, `#3CA64F`, `#21AEE5`) — one colour per category. Do not repeat colours within the same chart.
+- Category labels left-aligned, values at bar ends in matching colour, Poppins Bold.
+- Rounded bar corners: `rectRadius: 0.04"`.
+- **Bar spacing must be calculated dynamically** based on the number of bars and available vertical space. Never hardcode bar spacing — calculate: `barSpacing = Math.min(0.55, availableHeight / barCount)`.
+- **All bars, labels, and source must fit** within the content area (y=1.5" to y=4.7"). If they don't fit, split across two slides.
+
+### Source lines — PPTX specific
+
+- Source text at 9pt Poppins, primary colour at ~60% opacity.
+- **Position dynamically** below the last chart element — never at a hardcoded y position.
+- If the source line would overlap content or extend below y=4.7", move it to speaker notes instead.
+- **Dense grid layouts** (2×2 card grids, quote grids): always move source to speaker notes. The grid fills the available space.
+
+### Chart title — PPTX specific
+
+- Chart titles follow the **presentation-design-rules** title constraints: maximum **52 characters (including spaces)**, single line only, action title stating the insight.
+- Chart title size: **22pt Poppins Bold** — consistent with all slide titles.
+
+### Comparison table — PPTX specific
+
+- Container card with **emphasis-colour top border** (0.06" tall, full card width).
+- Both column headings in **primary colour** (same colour — no visual hierarchy between columns).
+- **Winning values**: soft teal card background (`#58B999` at 85% transparency).
+- **Losing values**: white card background.
+- No separator line under column headers — use white space.
+
+### KPI cards — PPTX specific
+
+- Maximum 4 cards per slide.
+- Headline number: 32pt Poppins Bold, dark teal `#2E7D60` for positive, dark red `#C4004A` for negative.
+- Delta with directional arrow (↑ or ↓) in matching colour — arrow supplements colour for WCAG 1.4.1.
+- Label in primary colour at 40% transparency.
+
+### Small multiples — PPTX specific
+
+- Maximum 4 panels in a 2×2 grid per slide.
+- Each panel in a soft grey card (`#F7F8F9`).
+- **Fixed axis scales** across all panels — varying scales make comparisons misleading.
+- Source citation goes to **speaker notes** — the grid fills the available space.
+
