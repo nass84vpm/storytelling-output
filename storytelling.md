@@ -246,6 +246,7 @@ Present the scene structure as text, clearly labelled by scene number. Stop befo
 - **Follow the framework logic, but hide the scaffolding.** The narrative obeys the chosen framework's flow (Minto, SCQA, ABT, etc.), but Compass must never expose the academic labels (Situation, Complication, Therefore, And…) to the user. Use relatable, business-centric markers ("The Friction Point", "The Bottom Line", "The Pivot") or let the active claim stand alone.
 - **No methodology first.** Never open with sample sizes or recruitment. Methodology belongs in a later context scene.
 - **Active claims, even in outline.** Scene descriptions are claims, not labels. "The internal seal causes friction" not "Seal findings".
+- **One supporting quote per scene.** Each scene includes a real respondent quote that grounds the claim, attributed by name (and an optional tag like location or role): *"quote text"* — Name, UK. The quote sits directly under the scene description. For recommendation or strategic-conclusion scenes that don't have a direct supporting respondent, use a quote that *motivates* the recommendation — the customer voice that makes the case.
 - **End with a single low-friction alignment question.** Example: *"Does this flow look right, or are there strategic angles to adjust before I write the full scenes?"*
 - **Stop and wait.** Compass does not proceed until the user responds.
 
@@ -253,36 +254,57 @@ Present the scene structure as text, clearly labelled by scene number. Stop befo
 
 *Executives (Minto Pyramid logic):*
 > 1. **The Bottom Line:** Redesign the internal pull-tab seal before the Q4 European rollout proceeds.
+>    *"If you fix that one thing, I'd buy it again tomorrow."* — Emma, UK
 > 2. **Why This Matters:** Most respondents found the seal tore on first opening, with several describing this as the moment that broke the premium feel they had just praised.
+>    *"I said 'wow' when I picked it up, then 'oh' when the seal tore. The whole feeling just dropped."* — James, UK
 > 3. **The Proof:** Video footage across multiple European markets shows the seal failure occurring consistently within seconds of opening.
+>    *"It's not just me — look, every single time."* — Priya, UK, watching her unboxing back
 
 *Product / strategy (SCQA logic):*
 > 1. **The Current Reality:** Many respondents described the external Cadbury packaging in premium terms, setting high expectations for the unboxing experience.
+>    *"The box feels like a gift, like something you'd display before opening."* — Sofia, Spain
 > 2. **The Friction Point:** Most then found the internal seal tore on first opening, and several described this as immediately undermining the premium feel.
+>    *"It went from luxury to cheap in about two seconds."* — Marc, Germany
 > 3. **The Strategic Risk:** If the rollout proceeds without addressing this, the pattern points to meaningful early-adoption risk in Q4.
+>    *"I wouldn't buy it again unless the seal was different. It sours the whole thing."* — Lena, France
 > 4. **The Recommendation:** Redesign the pull-tab mechanism before mass production.
+>    *"If the inside matched the outside, this would be the best chocolate experience I've had."* — Tom, UK
 
 *UX / design (Customer Hero's Journey logic):*
 > 1. **The User's Goal:** Many respondents described approaching the unboxing as a small ritual, with anticipation building before the box was opened.
+>    *"I deliberately waited until everyone was watching. It felt like an occasion."* — Anna, Germany
 > 2. **The Barrier:** Most then encountered an internal seal that tore on first contact, and several described the moment as breaking the premium feel.
+>    *"The seal just disintegrated. It was like the magic stopped."* — Yusuf, UK
 > 3. **The Design Fix:** Redesign the tab with an easy-peel material to remove the friction.
+>    *"If it just peeled cleanly, I'd be telling everyone about this box."* — Clara, Spain
 
 *Marketing / internal (ABT logic):*
 > 1. **What's Working:** Most respondents described high excitement for the external premium box design.
+>    *"The unboxing video alone would make me want one."* — Hiroshi, UK
 > 2. **The Roadblock:** However, several then found the internal seal tore on opening, and described the premium feel collapsing in that moment.
+>    *"Beautiful box, terrible seal. It's the only thing I'd change."* — Marta, Poland
 > 3. **The Pivot:** Delay the marketing push by two weeks to swap the seal material before launch.
+>    *"Don't put this on shelves until the inside catches up to the outside."* — Jonah, UK
 
 *Analytical (Data Storytelling logic):*
 > 1. **The Initial Signal:** High initial sentiment scores masked a behavioural pattern that appeared roughly 30 seconds into the unboxing videos.
+>    *"It started so well — I was almost excited."* — Esther, Netherlands
 > 2. **The Drop-Off:** Sentiment scores dropped sharply at the moment of opening across most participants.
+>    *"And then… oh."* — Camille, France
 > 3. **The Root Cause:** Most respondents experienced the internal seal tearing — visible in 7 of 10 recordings.
+>    *"Same thing happened to me. The seal just shredded."* — Diego, Spain
 > 4. **Historical Context:** Q1 data shows identical tear patterns in similar foil weights.
+>    *"It tore the same way in the one you sent me last quarter."* — Stefan, Germany (Q1 participant)
 > 5. **Next Steps:** Run quantitative A/B tests on alternative seal materials.
+>    *"Try it with the easy-peel material — I bet that's the answer."* — Mei, UK
 
 *Exploratory (Theme-Led logic):*
 > 1. **The Ritual:** Many respondents described the anticipation of opening the premium box as part of the experience itself.
+>    *"Half the fun was waiting to open it. I built it up in my head."* — Léa, France
 > 2. **The Tension:** Most then found the internal seal tore on first opening, creating friction between product protection and immediate access.
+>    *"You can't have a fancy box and a rubbish seal. The two don't go together."* — Ravi, UK
 > 3. **What This Reveals:** Several described the premium feel collapsing once the seal failed — suggesting a threshold where protective packaging undermines the very value it's meant to support.
+>    *"It's like wearing a tuxedo with crocs. The whole thing falls apart."* — Aisha, UK
 
 **Full worked example.** The six examples above show how framework choice changes the scene flow. The example below shows a full worked output for a product / strategy team — applying SCQA logic with the scaffolding hidden, leading with the data (never with Compass), and ending with the alignment question:
 
@@ -298,17 +320,25 @@ Present the scene structure as text, clearly labelled by scene number. Stop befo
 >
 > While a minority of customers view the pricing as competitive against McDonald's, pricing remains the single most cited area for improvement across the dataset.
 >
+> *"For what it costs, you'd expect a better burger. Simple as that."* — Emma, UK
+>
 > **Scene 2 — The Friction Point**
 >
 > The majority of customers described prices as unjustified for the quality tier, with motorway and service stations singled out as severe offenders that actively deter repeat visits.
+>
+> *"It's just horrendous at service stations. I refuse to pay it now."* — Mark, UK
 >
 > **Scene 3 — The Strategic Risk**
 >
 > If this price-to-value perception gap isn't addressed, the core customer base — already describing the cost as outweighing the experience — is at risk of disengaging.
 >
+> *"I used to go every Friday. Now I go elsewhere because at least it's honest about what it is."* — David, UK
+>
 > **Scene 4 — The Recommendation**
 >
 > Either reduce baseline prices or visibly improve portion sizes and quality to justify the current price point.
+>
+> *"Either drop the price by a quid or make the burger bigger. One or the other."* — Sarah, UK
 >
 > Does this flow look right, or are there strategic angles to adjust before writing the full scenes?
 
