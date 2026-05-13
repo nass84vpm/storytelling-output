@@ -9,7 +9,9 @@ description: Use this skill when a user requests a deliverable from research dat
 
 This skill controls how Compass turns a user's request into a deliverable (a presentation, showreel, podcast, or report). Without it, Compass jumps straight from prompt to generation, which produces poor results — the story gets guessed rather than agreed.
 
-The skill replaces that shortcut with a deliberate sequence: understand the request, check the data is ready, agree the story, then generate. **The chat is the negotiation moment, not the delivery moment.**
+The skill replaces that shortcut with a deliberate sequence: understand the request, agree the brief, check the data, agree the story, then generate. **The chat is the negotiation moment, not the delivery moment.**
+
+**The brief comes before the data.** Compass resolves the audience, decision, and format *first* — then scopes the data lookup to what the brief actually needs. Asking before fetching saves time on irrelevant data scans and prevents Compass from telling a brilliant story that answers the wrong question.
 
 ## Core principles
 
@@ -37,7 +39,7 @@ The ambiguous bucket is intentionally large. Asking a single lightweight questio
 
 ### Stage 1a: Confirm intent (only if ambiguous)
 
-If Stage 1 landed in the ambiguous bucket, Compass asks one grounded question rather than guessing. The question asks about *purpose* — is this for the user's own understanding, or to share with others — not about form. Purpose is the better predictor of whether a deliverable is needed; form is downstream and handled in Stage 3f.
+If Stage 1 landed in the ambiguous bucket, Compass asks one grounded question rather than guessing. The question asks about *purpose* — is this for the user's own understanding, or to share with others — not about form. Purpose is the better predictor of whether a deliverable is needed; form is downstream and handled in Stage 2e.
 
 Ground the question in what Compass observed (the data, the framing) so it feels specific, not reflexive:
 
@@ -53,53 +55,16 @@ Rules for the question:
 Routing the answer:
 
 - **"For myself" / "Just understanding it":** Exit the skill, hand to standard answer flow.
-- **"To share with [X]":** Continue to Stage 2. Carry the audience hint (e.g., "the team", "my manager") forward as starting context for Stage 3c — but still confirm in the discovery prompt rather than treating it as final.
+- **"To share with [X]":** Continue to Stage 2. Carry the audience hint (e.g., "the team", "my manager") forward as starting context for Stage 2b — but still confirm in the discovery prompt rather than treating it as final.
 - **Redirect** ("just answer the question", "actually, make it a podcast"): Follow their lead.
 
-### Stage 2: Project readiness check
+### Stage 2: Brief alignment (the clarification gate)
 
-Compass silently checks whether the data the user has asked about is available and complete. Two questions, both scoped to the user's request:
+Stage 2 locks in the brief before Compass goes near the data. Asking *who* the story is for, *what decision* it must inform, and *what format* it should take **first** means the data lookup in Stage 3 is scoped to what's actually needed — Compass doesn't waste time pulling material that turns out to be irrelevant, and doesn't deliver a story that answers the wrong question.
 
-1. Does the relevant data exist in the requested projects?
-2. Are those projects finished, or are markets still in field?
+The stage has five parts: introduce the three variables Compass needs, ask them as one conversational prompt, explain how they work together, handle the skip case, then confirm the format.
 
-**Path A: Ready.** The requested data exists and collection is complete. Continue to Stage 3. Compass holds the methodological details (sample sizes, audiences, timeframes, collection methods) to surface in Stage 3 when introducing the data.
-
-**Path B: Not ready.** The requested data is missing, partial, or still being collected. Compass surfaces the specific gap and asks the user how to proceed. Framing weighs the strategic risk based on the decision context gathered in Stage 1.
-
-If the requested project is still in field:
-
-> "Mexico is still in field for the packaging study, so a portion of the dataset isn't yet available. Want me to run with the markets that have closed, or wait until Mexico is in?"
-
-If the requested data isn't covered and the gap is critical to the user's decision, flag the risk explicitly:
-
-> "Three projects contain strong packaging data, however none cover the Cadbury range specifically. Since this is for a Cadbury product launch decision, the narrative would rest on adjacent data rather than direct evidence. Want me to use the adjacent data as a directional baseline, or pause to run new research?"
-
-If the gap is less critical, keep the framing lighter:
-
-> "Several projects mention packaging, although none cover the Cadbury range specifically. Want me to run with what's there, or run more research to fill the gap?"
-
-Two paths from here:
-
-- **Run partial:** Continue to Stage 3 with reduced scope. If the remaining sample has fewer than five participants, label findings as "Directional" rather than confirmed, and add a Pro Tip asking the user to validate the gap before acting on the output. The Pro Tip is deliberate friction — a fluent AI narrative can read as confirmed consensus even when the signal is thin, so the pause forces explicit verification. Example:
-  > "A few participants responded to this question, so findings should be read as directional rather than confirmed. It's worth validating with a wider sample before acting on the output."
-- **Wait or run more research:** Exit the skill, hand to project completion or research setup depending on what's missing.
-
-### Stage 3: Pre-narrative discovery
-
-Stage 3 resolves the ambiguity in the user's request before Compass builds a story arc. The questions here are strategic, not logistical: they decide *who* the story is for and *why* it's being told, which together determine the arc.
-
-The stage has four parts: open with a data preamble, resolve three variables, ask as one conversational prompt, then compose the arc.
-
-#### 3a. Data preamble
-
-Open by stating what data the story will draw on. This gives the user transparency about scope and follows the lead-with-observation rule:
-
-> "This story will draw on the 2024 packaging survey, where 200 UK respondents described their reactions to the new format, the 2023 brand perception study, where 40 participants were interviewed about premium positioning, and the recent channel preferences research, where 150 respondents across Europe expressed preferences across retail channels."
-
-**Text only — no project list UI.** Never trigger or surface the project list UI component during the storytelling flow. Project data is used silently for readiness checks and scene building only — it is never presented to the user as a browsable list. The preamble describes the data in narrative prose, names the projects inline, and keeps the focus on what the data *contains* rather than turning the conversation into a project picker.
-
-#### 3b. The three variables to resolve
+#### 2a. The three variables to resolve
 
 Each variable has a clear job. Compass uses the answers to pick the arc, the causal logic, and the depth.
 
@@ -137,9 +102,9 @@ Each variable has a clear job. Compass uses the answers to pick the arc, the cau
 - **"I already know" user** → concise arc that focuses on unexpected boundaries.
 - **"Tell me everything" user** → foundational context plus deeper explanatory layers.
 
-**Output format is the fourth anchor — handled separately.** Format usually follows from audience and decision, but Compass states the assumption explicitly rather than silently picking. See 3f.
+**Output format is the fourth anchor — handled separately.** Format usually follows from audience and decision, but Compass states the assumption explicitly rather than silently picking. See 2e.
 
-#### 3c. Ask as one conversational prompt — the One-Gate Rule
+#### 2b. Ask as one conversational prompt — the One-Gate Rule
 
 Never present these as a bulleted checklist. Firing all three questions at once increases cognitive load and turns Compass into a robotic intake form rather than a synthesis partner. Compress them into a single, low-friction conversational prompt:
 
@@ -157,9 +122,9 @@ The user can answer fully, partially, or skip with "just build it" or "I don't k
   > "Got it — the question is whether to proceed with the Q4 rollout. Who's the core audience for this story?"
 
   Heavier decision context (what's been tried, what would make them act or dismiss) still comes through the Stage 5 edit loop, not here. The pause is only for the primary anchors.
-- **Full skip:** Compass falls back to graceful degradation — see Stage 3e.
+- **Full skip:** Compass falls back to graceful degradation — see Stage 2d.
 
-#### 3d. How the variables work together
+#### 2c. How the variables work together
 
 Audience and decision stack — they don't compete:
 
@@ -170,7 +135,7 @@ Audience and decision stack — they don't compete:
 
 Detail level is tuned later — Compass infers it for the first draft and refines it in the edit loop.
 
-#### 3e. If the user skips: graceful degradation
+#### 2d. If the user skips: graceful degradation
 
 If the user replies "just build it" or "I don't know yet", Compass cannot apply a targeted macro-structure like Minto or SCQA — there's no audience or decision to anchor to. Default to the **Theme-Led arc**: map the data as a network of interconnected themes rather than forcing a problem-solution arc.
 
@@ -179,7 +144,7 @@ Two rules apply when degrading:
 - **Earned themes only.** Even without a brief, never fall back to generic buckets ("Packaging findings", "Trust"). Themes come directly from the specific tensions in the data.
 - **No invented strategy.** Don't fabricate a recommendation or business outcome the user didn't ask for. Keep the output descriptive — describe the landscape, don't prescribe an action.
 
-When presenting the scenes in Stage 5, end with a soft re-prompt for the audience. This is the recovery mechanism — Compass uses the edit loop to gently surface the audience without forcing the user back through a formal Stage 3:
+When presenting the scenes in Stage 5, end with a soft re-prompt for the audience. This is the recovery mechanism — Compass uses the edit loop to gently surface the audience without forcing the user back through a formal Stage 2 discovery prompt:
 
 > "Since we aren't targeting a specific decision-maker yet, here's a theme-led arc mapping the core tensions respondents described:
 >
@@ -191,7 +156,7 @@ When presenting the scenes in Stage 5, end with a soft re-prompt for the audienc
 
 If the user names an audience in their reply, Compass switches to the appropriate macro-structure (Minto, SCQA, etc.) and rebuilds the outline. If they confirm the baseline as-is, Stage 6 generates the Theme-Led deliverable.
 
-#### 3f. Ask the format — one line, one pass
+#### 2e. Ask the format — one line, one pass
 
 Format is the fourth anchor. The audience usually suggests a default — executives lean to presentations, researchers to reports — but the default isn't always right. A manager might want a one-pager; a researcher might want a showreel.
 
@@ -208,14 +173,44 @@ One pass. If the user confirms or stays silent, proceed with the stated format. 
 
 This applies whether the prior step was a full answer, a partial-answer pause, or graceful degradation. If format wasn't named upfront, Compass asks before building scenes.
 
+### Stage 3: Data immersion & check
+
+With the brief locked in, Compass now retrieves the data — scoped to the audience, decision, and format resolved in Stage 2. The lookup is silent unless something blocks it.
+
+**Path A: Ready.** The data exists and matches the brief. Compass surfaces a brief preamble describing what it found, then moves to Stage 4. The preamble follows the lead-with-observation rule and names the projects inline:
+
+> "This story will draw on the 2024 packaging survey, where 200 UK respondents described their reactions to the new format, the 2023 brand perception study, where 40 participants were interviewed about premium positioning, and the recent channel preferences research, where 150 respondents across Europe expressed preferences across retail channels."
+
+**Text only — no project list UI.** Never trigger or surface the project list UI component during the storytelling flow. Project data is used silently for readiness checks and scene building only — it is never presented to the user as a browsable list. The preamble describes the data in narrative prose, names the projects inline, and keeps the focus on what the data *contains* rather than turning the conversation into a project picker.
+
+**Path B: Not ready.** The requested data is missing, partial, or still being collected. Compass surfaces the specific gap and asks the user how to proceed. Because the brief is already locked in from Stage 2, framing weighs the strategic risk against the *known* decision context — gaps that would matter to *this* audience get flagged accordingly.
+
+If a relevant project is still in field:
+
+> "Mexico is still in field for the packaging study, so a portion of the dataset isn't yet available. Want me to run with the markets that have closed, or wait until Mexico is in?"
+
+If the data doesn't cover the brief and the gap is critical to the user's decision, flag the risk explicitly:
+
+> "Three projects contain strong packaging data, however none cover the Cadbury range specifically. Since this is for a Cadbury product launch decision, the narrative would rest on adjacent data rather than direct evidence. Want me to use the adjacent data as a directional baseline, or pause to run new research?"
+
+If the gap is less critical, keep the framing lighter:
+
+> "Several projects mention packaging, although none cover the Cadbury range specifically. Want me to run with what's there, or run more research to fill the gap?"
+
+Two paths from here:
+
+- **Run partial:** Continue to Stage 4 with reduced scope. If the remaining sample has fewer than five participants, label findings as "Directional" rather than confirmed, and add a Pro Tip asking the user to validate the gap before acting on the output. The Pro Tip is deliberate friction — a fluent AI narrative can read as confirmed consensus even when the signal is thin, so the pause forces explicit verification. Example:
+  > "A few participants responded to this question, so findings should be read as directional rather than confirmed. It's worth validating with a wider sample before acting on the output."
+- **Wait or run more research:** Exit the skill, hand to project completion or research setup depending on what's missing.
+
 ### Stage 4: Build scene structure
 
-Compass builds the scene structure from the strategic anchors resolved in Stage 3 (audience, decision, available data). The structure is output-agnostic — it must work whether the deliverable is a presentation, showreel, podcast, or report.
+Compass builds the scene structure from the brief resolved in Stage 2 (audience, decision, format) and the data retrieved in Stage 3. The structure is output-agnostic — it must work whether the deliverable is a presentation, showreel, podcast, or report.
 
 **Construction rules:**
 
 - **Output-agnostic language.** Use "scene", not "slide" or "page".
-- **Apply the audience's macro-structure.** Never use a generic "beginning, middle, end" arc. Use the framework the audience triggered in Stage 3:
+- **Apply the audience's macro-structure.** Never use a generic "beginning, middle, end" arc. Use the framework the audience triggered in Stage 2:
   - *Executives* → **Minto Pyramid** (recommendation → supporting arguments → evidence).
   - *Product / strategy* → **SCQA** (Situation → Complication → Question → Answer).
   - *UX / CX / design* → **Customer Hero's Journey** (hero's goal → trial → mentor's solution).
