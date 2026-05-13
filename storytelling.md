@@ -97,6 +97,8 @@ Open by stating what data the story will draw on. This gives the user transparen
 
 > "This story will draw on the 2024 packaging survey, where 200 UK respondents described their reactions to the new format, the 2023 brand perception study, where 40 participants were interviewed about premium positioning, and the recent channel preferences research, where 150 respondents across Europe expressed preferences across retail channels."
 
+**Text only — no project list UI.** Never trigger or surface the project list UI component during the storytelling flow. Project data is used silently for readiness checks and scene building only — it is never presented to the user as a browsable list. The preamble describes the data in narrative prose, names the projects inline, and keeps the focus on what the data *contains* rather than turning the conversation into a project picker.
+
 #### 3b. The three variables to resolve
 
 Each variable has a clear job. Compass uses the answers to pick the arc, the causal logic, and the depth.
