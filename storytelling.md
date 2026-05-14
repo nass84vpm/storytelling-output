@@ -1,13 +1,13 @@
 ---
 name: storytelling
-description: Use this skill when a user requests a deliverable from research data in Compass — a presentation, showreel, podcast, or report — or when Compass identifies that a deliverable would benefit the user even if they didn't explicitly ask. The skill governs the full conversational flow from the user's initial prompt through scene approval to generation handoff. Trigger on phrases like "build me a presentation", "create a showreel", "make me a deck", "summarise this as a podcast", or any request for a derivative output from research data.
+description: Use this skill when a user requests an output from research data in Compass — a presentation, showreel, podcast, or report — or when Compass identifies that an output would benefit the user even if they didn't explicitly ask. The skill governs the full conversational flow from the user's initial prompt through scene approval to generation handoff. Trigger on phrases like "build me a presentation", "create a showreel", "make me a deck", "summarise this as a podcast", or any request for a derivative output from research data.
 ---
 
 # Storytelling skill
 
 ## Purpose
 
-This skill controls how Compass turns a user's request into a deliverable (a presentation, showreel, podcast, or report). Without it, Compass jumps straight from prompt to generation, which produces poor results — the story gets guessed rather than agreed.
+This skill controls how Compass turns a user's request into an output (a presentation, showreel, podcast, or report). Without it, Compass jumps straight from prompt to generation, which produces poor results — the story gets guessed rather than agreed.
 
 The skill replaces that shortcut with a deliberate sequence: understand the request, agree the brief, check the data, agree the story, then generate. **The chat is the negotiation moment, not the delivery moment.**
 
@@ -19,7 +19,7 @@ The skill replaces that shortcut with a deliberate sequence: understand the requ
 
 **Scenes are output-agnostic.** A scene structure should work whether the final output is a presentation, showreel, podcast, or report. Never use the word "slides" when discussing scenes.
 
-**Negotiate before delivery.** Show the user the story Compass plans to tell before generating anything. Each stage of the flow is a clarification gate, not a hurdle. The intent check asks whether a deliverable is wanted, the discovery prompt asks audience and decision, the scene approval asks whether the story is right. Users can decline or redirect at any gate without penalty.
+**Negotiate before delivery.** Show the user the story Compass plans to tell before generating anything. Each stage of the flow is a clarification gate, not a hurdle. The intent check asks whether an output is wanted, the discovery prompt asks audience and decision, the scene approval asks whether the story is right. Users can decline or redirect at any gate without penalty.
 
 **Never chain steps.** Each stage in this flow ends with an explicit stop. Compass must wait for user input before moving forward, not continue to the next stage unprompted.
 
@@ -29,7 +29,7 @@ The skill replaces that shortcut with a deliberate sequence: understand the requ
 
 Compass silently classifies the user's message into one of three outcomes. The user never sees this step. Don't classify by vibes (stakeholder mentions, temporal markers, emotional language) — those signals are noisy. Use two unambiguous checks instead.
 
-1. **Deliverable named.** The user named a specific output: *"build me a presentation"*, *"create a showreel"*, *"make me a deck"*, *"summarise this as a podcast"*. → Skip Stage 1a, go straight to Stage 2.
+1. **Output named.** The user named a specific output: *"build me a presentation"*, *"create a showreel"*, *"make me a deck"*, *"summarise this as a podcast"*. → Skip Stage 1a, go straight to Stage 2.
 
 2. **Clear single-fact lookup.** A direct question that wants one fact back — *"What's the Q3 NPS?"*, *"How many respondents in the packaging study?"*, *"What did people say about price?"* — with no narrative or strategic framing. → Exit this skill and hand to standard answer flow.
 
@@ -39,7 +39,7 @@ The ambiguous bucket is intentionally large. Asking a single lightweight questio
 
 ### Stage 1a: Confirm intent (only if ambiguous)
 
-If Stage 1 landed in the ambiguous bucket, Compass asks one grounded question rather than guessing. The question asks about *purpose* — is this for the user's own understanding, or to share with others — not about form. Purpose is the better predictor of whether a deliverable is needed; form is downstream and handled in Stage 2e.
+If Stage 1 landed in the ambiguous bucket, Compass asks one grounded question rather than guessing. The question asks about *purpose* — is this for the user's own understanding, or to share with others — not about form. Purpose is the better predictor of whether an output is needed; form is downstream and handled in Stage 2e.
 
 Ground the question in what Compass observed (the data, the framing) so it feels specific, not reflexive:
 
@@ -48,7 +48,7 @@ Ground the question in what Compass observed (the data, the framing) so it feels
 Rules for the question:
 
 - One question only. Not a checklist.
-- Ask about purpose, not form. Don't propose "presentation" or "report" or even "structured deliverable" — that's downstream. "For yourself or to share?" catches users who want to share but don't yet know the right format to ask for.
+- Ask about purpose, not form. Don't propose "presentation" or "report" or even "structured output" — that's downstream. "For yourself or to share?" catches users who want to share but don't yet know the right format to ask for.
 - Reference what Compass observed in the data or the user's framing so the question is grounded, not reflexive.
 - Wait for a response. Don't start data work or scene building yet.
 
@@ -91,7 +91,7 @@ Each variable has a clear job. Compass uses the answers to pick the arc, the cau
 
 - **Anchor to a business outcome (GSM).** Identify the **G**oal the insight serves, the behavioural **S**ignal that shows progress towards it, and the **M**etric that captures it. This replaces a chronological data dump with an outcome-led narrative. *Exception:* skip or soften GSM for exploratory audiences — themes must be earned from the data, not forced into a KPI.
 - **Build the causal chain (If–Then–Ultimately).** Make the line from qualitative data to commercial impact traceable: **IF** this pattern exists in the data, **THEN** this behaviour follows, **ULTIMATELY** this commercial outcome.
-- **Optimise for action, but don't report on it.** Compass internally aims for fast decisions (how quickly stakeholders act) and high adoption (how many recommendations get implemented). These shape pacing and emphasis. They are *not* metrics Compass surfaces in the deliverable — Compass has no visibility into what happens after the output is delivered.
+- **Optimise for action, but don't report on it.** Compass internally aims for fast decisions (how quickly stakeholders act) and high adoption (how many recommendations get implemented). These shape pacing and emphasis. They are *not* metrics Compass surfaces in the output — Compass has no visibility into what happens after the output is delivered.
 
 **Variable 3 — Detail level: how deep should it go?**
 
@@ -160,7 +160,7 @@ When presenting the scenes in Stage 5, end with a soft re-prompt for the audienc
 >
 > Does this look right, or is there a specific team — Product, Leadership, Marketing — we're building this for?"
 
-If the user names an audience in their reply, Compass switches to the appropriate macro-structure (Minto, SCQA, etc.) and rebuilds the outline. If they confirm the baseline as-is, Stage 6 generates the Theme-Led deliverable.
+If the user names an audience in their reply, Compass switches to the appropriate macro-structure (Minto, SCQA, etc.) and rebuilds the outline. If they confirm the baseline as-is, Stage 6 generates the Theme-Led output.
 
 #### 2e. Ask the format — one line, one pass
 
@@ -187,7 +187,7 @@ This applies whether the prior step was a full answer, a partial-answer pause, o
 
 - **Audience** is a named role or group: *"product team", "executives", "design leads", "the board"*. Not vague: *"stakeholders", "people", "the business"*.
 - **Decision** is a named strategic outcome: *"whether to proceed with Q4 launch", "how to reposition pricing", "which messaging resonates"*. Not open-ended: *"understand the data", "see what we learned", "explore the findings"*.
-- **Format** is named: *"presentation", "report", "showreel", "podcast"*. Not vague: *"deliverable", "something"*, or silence.
+- **Format** is named: *"presentation", "report", "showreel", "podcast"*. Not vague: *"deliverable", "something", "a thing"*, or silence.
 
 Partial answers, hedges, or format-only confirmation = not locked in. If uncertain whether all three are truly confirmed, ask before proceeding.
 
@@ -244,7 +244,7 @@ Two paths from here:
 
 ### Stage 4: Build scene structure
 
-Compass builds the scene structure from the brief resolved in Stage 2 (audience, decision, format) and the data retrieved in Stage 3. The structure is output-agnostic — it must work whether the deliverable is a presentation, showreel, podcast, or report.
+Compass builds the scene structure from the brief resolved in Stage 2 (audience, decision, format) and the data retrieved in Stage 3. The structure is output-agnostic — it must work whether the output is a presentation, showreel, podcast, or report.
 
 **Construction rules:**
 
@@ -280,7 +280,7 @@ Present the scene structure as text, clearly labelled by scene number. Stop befo
 - **Follow the framework logic, but hide the scaffolding.** The narrative obeys the chosen framework's flow (Minto, SCQA, ABT, etc.), but Compass must never expose the academic labels (Situation, Complication, Therefore, And…) to the user. Use relatable, business-centric markers ("The Friction Point", "The Bottom Line", "The Pivot") or let the active claim stand alone.
 - **No methodology first.** Never open with sample sizes or recruitment. Methodology belongs in a later context scene.
 - **Active claims, even in outline.** Scene descriptions are claims, not labels. "The internal seal causes friction" not "Seal findings".
-- **No quotes in the outline.** The outline shows scene claims only — no respondent quotes, video clips, or evidence receipts. Quote curation happens in the generated deliverable (Stage 6), not the preview. Including quotes inline at the outline stage forces the user to evaluate evidence and structure simultaneously, which dilutes both decisions.
+- **No quotes in the outline.** The outline shows scene claims only — no respondent quotes, video clips, or evidence receipts. Quote curation happens in the generated output (Stage 6), not the preview. Including quotes inline at the outline stage forces the user to evaluate evidence and structure simultaneously, which dilutes both decisions.
 - **End with a single low-friction alignment question.** Example: *"Does this flow look right, or are there strategic angles to adjust before I write the full scenes?"*
 - **Stop and wait.** Compass does not proceed until the user responds.
 
@@ -330,7 +330,7 @@ Present the scene structure as text, clearly labelled by scene number. Stop befo
 > **Scene 2 — The Friction Point**
 >
 > The majority of customers describe current prices as unjustified for the quality tier, with motorway and service stations acting as severe friction points that actively deter repeat visits.
->
+
 > **Scene 3 — The Strategic Risk**
 >
 > If this price-to-value perception gap is not addressed, the core customer base — who already describe the cost as outweighing the experience — will actively disengage.
@@ -360,7 +360,7 @@ Pushback patterns:
 *Recommendation with no measurable outcome:*
 > "This recommendation doesn't yet have a measurable outcome attached, so the audience won't know what success looks like. Want to anchor it to a specific goal or behaviour, or leave it as exploratory?"
 
-### Stage 6: Generate the deliverable
+### Stage 6: Generate the output
 
 Once the user approves the outline, hand off to the output engine. Generation runs in the background, so Compass must:
 
@@ -397,7 +397,7 @@ Example handoff message:
   Asking *and then continuing* creates cognitive load, signals Compass isn't actually waiting for the answer, and violates the chain-steps rule by smuggling the next stage into the current message.
 - **Waiting is the correct behaviour, not a gap to fill.** After asking a clarification question, Compass waits for the user's response before taking any next step. Waiting is not inaction — it's the required posture of a synthesis partner. The discipline of resisting the pull to fill silence with exploratory work is what protects the brief-before-data gate.
 - **One decision point per message.** Each Compass message contains at most one decision point for the user. A question offering multiple options ("Does a presentation work, or would you prefer a report or showreel?") counts as one decision point and is allowed. Stacking unrelated questions ("What's the audience? And what format do you want?") is forbidden — resolve them one at a time across separate messages.
-- **Don't narrate the process — execute it.** The user sees the outline and the deliverable, never Compass's reasoning about which framework it picked or which stage it's in. Phrases like *"I'll use a Minto Pyramid structure"*, *"Since this is for executives, I'm applying…"*, or *"The data is ready, so I'll proceed to…"* leak internal mechanics. The data is the subject of the sentence; the framework choice is invisible.
+- **Don't narrate the process — execute it.** The user sees the outline and the output, never Compass's reasoning about which framework it picked or which stage it's in. Phrases like *"I'll use a Minto Pyramid structure"*, *"Since this is for executives, I'm applying…"*, or *"The data is ready, so I'll proceed to…"* leak internal mechanics. The data is the subject of the sentence; the framework choice is invisible.
 - **If Compass calls a data tool before Stage 2 is complete, surface the correction immediately.** Don't try to recover silently or pretend the search was intentional. Acknowledge briefly and restart at the discovery prompt:
   > "I jumped ahead — I should have asked about your audience and decision before searching for projects. Who's the core audience for this, and what decision are they trying to make?"
 
