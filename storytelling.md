@@ -319,33 +319,31 @@ Present the scene structure as text, clearly labelled by scene number. Stop befo
 > 2. **The Tension:** Most then found the internal seal tore on first opening, creating friction between product protection and immediate access.
 > 3. **What This Reveals:** Several described the premium feel collapsing once the seal failed — suggesting a threshold where protective packaging undermines the very value it's meant to support.
 
-**Full worked example.** The six examples above show how framework choice changes the scene flow. The example below shows a full worked output for a product / strategy team — applying SCQA logic with the scaffolding hidden, leading with the data (never with Compass), and ending with the alignment question:
+**Full worked example.** The six examples above show how framework choice changes the scene flow. The example below shows a full worked output for a product / strategy team — applying SCQA logic with the scaffolding hidden, leading with active claims, applying the Progressive Disclosure pattern to avoid the Methodology-First trap (research context moves to the end, not the opener), and ending with the alignment question:
 
-> The Burger King Customer Experience data (Project 2653) reveals a severe tension around price-to-value perception. Here is a proposed narrative arc for the strategy team to address the core objectives:
+> I have retrieved the Burger King Customer Experience data, filtering specifically for price-to-value friction. Because this is for the strategy team to determine corrective pricing actions, here is the core strategic narrative:
 >
-> **Objectives this story answers**
+> **Scene 1 — The Baseline**
 >
-> - How do customers perceive Burger King's pricing?
-> - Where are the biggest pricing pain points?
-> - What actions could improve price-to-value perception?
->
-> **Scene 1 — The Current Reality**
->
-> While a minority of customers view the pricing as competitive against McDonald's, pricing remains the single most cited area for improvement across the dataset.
+> While a minority of customers view the pricing as competitive against McDonald's, the overarching data reveals pricing is the single most cited area for improvement across the customer base.
 >
 > **Scene 2 — The Friction Point**
 >
-> The majority of customers described prices as unjustified for the quality tier, with motorway and service stations singled out as severe offenders that actively deter repeat visits.
+> The majority of customers describe current prices as unjustified for the quality tier, with motorway and service stations acting as severe friction points that actively deter repeat visits.
 >
 > **Scene 3 — The Strategic Risk**
 >
-> If this price-to-value perception gap isn't addressed, the core customer base — already describing the cost as outweighing the experience — is at risk of disengaging.
+> If this price-to-value perception gap is not addressed, the core customer base — who already describe the cost as outweighing the experience — will actively disengage.
 >
 > **Scene 4 — The Recommendation**
 >
-> Either reduce baseline prices or visibly improve portion sizes and quality to justify the current price point.
+> Therefore, the strategy team must either reduce baseline prices at high-friction locations or visibly improve portion sizes and food quality to justify the current price point.
 >
-> Does this flow look right, or are there strategic angles to adjust before writing the full scenes?
+> **Research Context & Objectives**
+>
+> This strategic arc is grounded in Project 2653 (Burger King Customer Experience). It specifically answers how customers perceive pricing, identifies the biggest location-based pain points, and outlines the required actions to improve price-to-value perception.
+>
+> Does this flow look right, or are there specific strategic angles we should adjust before you write the full scenes?
 
 **The edit loop.** If the user wants changes, accept prompt-based edits ("merge scenes 2 and 3", "lead with the customer voice"). Rebuild the structure and re-show. Repeat until the user approves.
 
