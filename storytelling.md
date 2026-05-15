@@ -11,7 +11,9 @@ This skill controls how Compass turns a user's request into an output (a present
 
 The skill replaces that shortcut with a deliberate sequence: understand the request, agree the brief, check the data, agree the story, then generate. **The chat is the negotiation moment, not the delivery moment.**
 
-**The brief comes before the data.** Compass resolves audience and decision *first* — then scopes the data lookup to what the brief actually needs. Asking before fetching saves time on irrelevant data scans and prevents Compass from telling a brilliant story that answers the wrong question. Format is handled later, after the data preamble — so the user can see what's worth sharing before committing to a full output.
+**The skill only runs when the user explicitly asks for an output.** If the user names a presentation, showreel, podcast, deck, or report, Compass follows the full structure below. If they ask anything else — a question, a summary, an open exploration — the skill exits and hands to the standard answer flow.
+
+**The brief comes before the data.** Compass resolves audience and decision *first* — then scopes the data lookup to what the brief actually needs. Asking before fetching saves time on irrelevant data scans and prevents Compass from telling a brilliant story that answers the wrong question.
 
 ## Core principles
 
@@ -19,7 +21,7 @@ The skill replaces that shortcut with a deliberate sequence: understand the requ
 
 **Scenes are output-agnostic.** A scene structure should work whether the final output is a presentation, showreel, podcast, or report. Never use the word "slides" when discussing scenes.
 
-**Negotiate before delivery.** Show the user the story Compass plans to tell before generating anything. Each stage of the flow is a clarification gate, not a hurdle. The discovery prompt asks audience and decision; the data preamble shows what's been found; the intent check asks whether to build it out or just take the summary; the scene approval asks whether the story is right. Users can decline or redirect at any gate without penalty.
+**Negotiate before delivery.** Show the user the story Compass plans to tell before generating anything. Each stage of the flow is a clarification gate, not a hurdle. The discovery prompt asks audience and decision; the data preamble shows what's been found; the scene approval asks whether the story is right. Users can decline or redirect at any gate without penalty.
 
 **Never chain steps.** Each stage in this flow ends with an explicit stop. Compass must wait for user input before moving forward, not continue to the next stage unprompted.
 
@@ -27,19 +29,19 @@ The skill replaces that shortcut with a deliberate sequence: understand the requ
 
 ### Stage 1: Classify the request
 
-Compass silently classifies the user's message into one of three outcomes. The user never sees this step. Don't classify by vibes (stakeholder mentions, temporal markers, emotional language) — those signals are noisy. Use two unambiguous checks instead.
+Compass silently classifies the user's message. The user never sees this step. The check is binary:
 
-1. **Output named.** The user named a specific output: *"build me a presentation"*, *"create a showreel"*, *"make me a deck"*, *"summarise this as a podcast"*. → Go straight to Stage 2.
+1. **Output named** — the user explicitly asked for a presentation, showreel, deck, podcast, report, one-pager, or any other named output (*"build me a presentation"*, *"create a showreel"*, *"make me a deck"*, *"summarise this as a podcast"*). → Run the skill, go to Stage 2.
 
-2. **Clear single-fact lookup.** A direct question that wants one fact back — *"What's the Q3 NPS?"*, *"How many respondents in the packaging study?"*, *"What did people say about price?"* — with no narrative or strategic framing. → Exit this skill and hand to standard answer flow.
+2. **Anything else** — questions, summaries, exploratory asks, fact lookups, or anything that doesn't name a specific output. → Exit the skill and hand to the standard answer flow.
 
-3. **Anything else** → Go to Stage 2. Gather audience and decision, retrieve the data, then ask the user whether they want to share or just take the summary — *after* they've seen what's there. Asking intent upfront, before any data has been surfaced, creates too much friction and forces users to commit to a full output before they know what's worth sharing.
+The skill is for *building structured outputs*. If the user isn't asking for one, the standard answer flow handles their request better — without the brief-alignment overhead.
 
 ### Stage 2: Brief alignment (the clarification gate)
 
 Stage 2 locks in **audience and decision** before Compass goes near the data. These two anchors scope the data lookup in Stage 3 to what the brief actually needs — Compass doesn't waste time pulling material that turns out to be irrelevant, and doesn't deliver a story that answers the wrong question.
 
-**Format is handled after the data preamble in Stage 3b**, not here. Asking format upfront — before the user has seen what the data contains — risks committing them to a full output when a summary would do.
+Format is already known — the user named it in their request (that's why the skill is running). The only anchors Compass needs to resolve here are audience and decision.
 
 The stage has four parts: introduce the variables Compass needs, ask them as one conversational prompt, explain how they work together, then handle the skip case.
 
@@ -81,7 +83,7 @@ Each variable has a clear job. Compass uses the answers to pick the arc, the cau
 - **"I already know" user** → concise arc that focuses on unexpected boundaries.
 - **"Tell me everything" user** → foundational context plus deeper explanatory layers.
 
-**Output format is handled later.** Format isn't a Stage 2 question — it's asked after the data preamble in Stage 3b, *only if* the user confirms they want to share. See Stage 3b.
+**Format is a given, not a variable.** The user already named the output in their request (a presentation, showreel, podcast, report, etc.). Compass doesn't need to ask. The output type they named drives how Stage 4 builds the scene structure.
 
 #### 2b. Ask as one conversational prompt — the One-Gate Rule
 
@@ -142,7 +144,7 @@ If the user names an audience in their reply, Compass switches to the appropriat
 
 #### 2e. Hard gate — no data tools until audience and decision are locked
 
-**Compass must not call any data retrieval tool until audience and decision are locked in.** This includes `findProjects`, `searchProjects`, `listProjects`, `getProjectAnalytics`, `getProjectTranscripts`, `semanticVideoSearch`, `searchProjectsByTranscript`, `getSegmentAnalysisResults`, or any other data lookup tool. Format is *not* required at this gate — it's asked in Stage 3b after the user has seen the preamble.
+**Compass must not call any data retrieval tool until audience and decision are locked in.** This includes `findProjects`, `searchProjects`, `listProjects`, `getProjectAnalytics`, `getProjectTranscripts`, `semanticVideoSearch`, `searchProjectsByTranscript`, `getSegmentAnalysisResults`, or any other data lookup tool. Format is already given (the user named the output in their request), so it's not part of this gate.
 
 **Inference confidence check (run before applying the gate).** If audience or decision is unconfirmed, check whether it can be inferred from the user's role, the project context, prior conversation, or their explicit framing.
 
@@ -198,10 +200,7 @@ With audience and decision locked in, Compass now retrieves the data — scoped 
 
 Do not call `findProjects`, `searchProjectsByTranscript`, `getProjectAnalytics`, or any other data retrieval tool. Do not draft an outline. Do not estimate or assume the missing anchor based on context clues or prior conversation. Return to Stage 2, ask the single clarification question for the missing piece, and wait for the response.
 
-**Path A: Ready.** The data exists and matches the brief. The next step depends on whether the user named an output in their original request.
-
-- **Output was named upfront** (e.g., *"build me a presentation"*): no preamble, no intent check. Move silently to Stage 4 and build the outline. The user has already committed to the deliverable — showing the data first and re-asking would be redundant friction.
-- **Output was not named** (ambiguous request): surface a brief preamble describing what was found, then proceed to Stage 3b to confirm intent and format. The preamble follows the lead-with-observation rule and names the projects inline:
+**Path A: Ready.** The data exists and matches the brief. Compass surfaces a brief preamble describing what it found, then moves to Stage 4. The preamble follows the lead-with-observation rule and names the projects inline:
 
 > "This story will draw on the 2024 packaging survey, where 200 UK respondents described their reactions to the new format, the 2023 brand perception study, where 40 participants were interviewed about premium positioning, and the recent channel preferences research, where 150 respondents across Europe expressed preferences across retail channels."
 
@@ -223,34 +222,13 @@ If the gap is less critical, keep the framing lighter:
 
 Two paths from here:
 
-- **Run partial:** Continue with reduced scope (after the Stage 3b intent check still passes). If the remaining sample has fewer than five participants, label findings as "Directional" rather than confirmed, and add a Pro Tip asking the user to validate the gap before acting on the output. The Pro Tip is deliberate friction — a fluent AI narrative can read as confirmed consensus even when the signal is thin, so the pause forces explicit verification. Example:
+- **Run partial:** Continue to Stage 4 with reduced scope. If the remaining sample has fewer than five participants, label findings as "Directional" rather than confirmed, and add a Pro Tip asking the user to validate the gap before acting on the output. The Pro Tip is deliberate friction — a fluent AI narrative can read as confirmed consensus even when the signal is thin, so the pause forces explicit verification. Example:
   > "A few participants responded to this question, so findings should be read as directional rather than confirmed. It's worth validating with a wider sample before acting on the output."
 - **Wait or run more research:** Exit the skill, hand to project completion or research setup depending on what's missing.
 
-#### 3b. Confirm intent and format — post-preamble
-
-**Stage 3b only runs when the user did not name an output in their original request.** If they said *"build me a presentation"* or *"create a showreel"*, intent and format are already confirmed — skip this stage entirely and proceed straight to Stage 4.
-
-For ambiguous requests (the user wanted *something* but didn't say what), Stage 3b is where intent gets confirmed — after the user has seen what the data contains, not before.
-
-After the preamble lands, ask one combined question. Propose a format based on the audience, and offer the summary as an explicit alternative:
-
-> "Want me to build this out as a presentation for [audience], or do you just want to take this summary as-is?"
-
-If the user says **build it out**: confirm format (use what they specified, or the proposed format if they confirm with silence), then proceed to Stage 4. Example responses:
-- *"Yes, a presentation works"* → presentation, Stage 4.
-- *"Actually, a report would be better"* → swap format, Stage 4.
-- *"Yes"* → use proposed format, Stage 4.
-
-If the user says **just the summary**: the data preamble *is* the answer. Present it as a tight summary and exit the skill.
-
-If the user redirects or asks for something else ("just the headlines", "podcast instead"), follow their lead.
-
-**Why this gate sits here, not earlier.** Asking upfront — before the user has seen what the data contains — creates friction. Users can't always tell whether they want a full output until they see what's worth sharing. By the time Compass has retrieved scoped data and shown the preamble, the user can make an informed decision.
-
 ### Stage 4: Build scene structure
 
-Compass builds the scene structure from audience and decision (resolved in Stage 2), the data retrieved in Stage 3, and the format confirmed in Stage 3b. The structure is output-agnostic — it must work whether the output is a presentation, showreel, podcast, or report.
+Compass builds the scene structure from audience and decision (resolved in Stage 2), the data retrieved in Stage 3, and the format named in the user's original request. The structure is output-agnostic — it must work whether the output is a presentation, showreel, podcast, or report.
 
 **Construction rules:**
 
