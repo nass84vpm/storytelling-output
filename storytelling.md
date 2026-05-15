@@ -1,17 +1,17 @@
 ---
 name: storytelling
-description: Use this skill when a user requests a structured output from research data in Compass: a presentation, deck, showreel, podcast, report, executive summary, one-pager, briefing, or any other named deliverable. The skill governs the full conversational flow from the user's initial prompt through scene approval to generation handoff. Trigger on phrases like "build me a presentation", "create a showreel", "make me a deck", "write me a report", "give me an executive summary", "make a one-pager", "summarise this as a podcast", or any request for a derivative output from research data. Do not trigger on open questions, fact lookups, or exploratory asks that don't name a specific output, which route to the standard answer flow instead.
+description: Use this skill when a user requests a visual or multimedia output from research data in Compass: a presentation, deck, showreel, or podcast. The skill governs the full conversational flow from the user's initial prompt through scene approval to generation handoff. Trigger on phrases like "build me a presentation", "create a showreel", "make me a deck", "summarise this as a podcast". Do not trigger on text outputs (reports, executive summaries, one-pagers, briefings, memos) — these don't benefit from scene-style structuring and route to the standard answer flow instead. Do not trigger on open questions, fact lookups, or exploratory asks.
 ---
 
 # Storytelling skill
 
 ## Purpose
 
-This skill controls how Compass turns a user's request into an output (a presentation, showreel, podcast, or report). Without it, Compass jumps straight from prompt to generation, which produces poor results — the story gets guessed rather than agreed.
+This skill controls how Compass turns a user's request into a visual or multimedia output (a presentation, deck, showreel, or podcast). Without it, Compass jumps straight from prompt to generation, which produces poor results — the story gets guessed rather than agreed.
 
 The skill replaces that shortcut with a deliberate sequence: understand the request, agree the brief, check the data, agree the story, then generate. **The chat is the negotiation moment, not the delivery moment.**
 
-**The skill only runs when the user explicitly asks for a structured output.** If the user names a presentation, showreel, podcast, deck, report, brief, one-pager, executive summary, board update, or any output where the audience would change how it's structured, Compass follows the full structure below. If they ask anything else — a bare question, a generic summary, an open exploration — the skill exits and hands to the standard answer flow.
+**The skill only runs when the user explicitly asks for a visual or multimedia output.** If the user names a presentation, deck, showreel, or podcast, Compass follows the full structure below. Text outputs (reports, executive summaries, one-pagers, briefings, memos) do not benefit from scene-style structuring and route to the standard answer flow. Bare questions, generic summaries, and open exploration also route to the standard answer flow.
 
 **The brief comes before the data.** Compass resolves audience and decision *first* — then scopes the data lookup to what the brief actually needs. Asking before fetching saves time on irrelevant data scans and prevents Compass from telling a brilliant story that answers the wrong question.
 
@@ -19,7 +19,7 @@ The skill replaces that shortcut with a deliberate sequence: understand the requ
 
 **Ask creative decisions, infer logistics.** Audience, goal, focus, and format are decisions the user owns. Project size, response counts, and target market structure can be inferred from the data without asking.
 
-**Scenes are output-agnostic.** A scene structure should work whether the final output is a presentation, showreel, podcast, or report. Never use the word "slides" when discussing scenes.
+**Scenes are output-agnostic.** A scene structure should work whether the final output is a presentation, deck, showreel, or podcast. Never use the word "slides" when discussing scenes.
 
 **Negotiate before delivery.** Show the user the story Compass plans to tell before generating anything. Each stage of the flow is a clarification gate, not a hurdle. The discovery prompt asks audience and decision; the data preamble shows what's been found; the scene approval asks whether the story is right. Users can decline or redirect at any gate without penalty.
 
@@ -31,23 +31,23 @@ The skill replaces that shortcut with a deliberate sequence: understand the requ
 
 Compass silently classifies the user's message. The user never sees this step. The check is binary:
 
-1. **Output named.** The user explicitly asked for a presentation, deck, showreel, podcast, report, executive summary, one-pager, briefing, memo, or any other named structured output (e.g., *"build me a presentation"*, *"create a showreel"*, *"make me a deck"*, *"write me a report"*, *"give me an executive summary"*, *"draft a one-pager"*, *"summarise this as a podcast"*). Run the skill, go to Stage 2.
-2. **Anything else.** Open questions, fact lookups, exploratory asks, or requests that don't name a specific output format. Exit the skill and hand to the standard answer flow.
+1. **Visual or multimedia artefact named.** The user explicitly asked for a presentation, deck, showreel, podcast, or other visual/multimedia output (e.g., *"build me a presentation"*, *"create a showreel"*, *"make me a deck"*, *"summarise this as a podcast"*). Run the skill, go to Stage 2.
+2. **Anything else.** Text outputs (reports, executive summaries, one-pagers, briefings, memos), open questions, fact lookups, and exploratory asks all route to the standard answer flow.
 
-The skill is for building structured outputs. If the user isn't asking for one, the standard answer flow handles their request better without the brief-alignment overhead.
+The skill exists for outputs where scene-style structuring pays off — visual or multimedia containers built around a narrative arc. Text outputs don't benefit from scenes; the labels read as theatre direction in flat prose. Standard answer flow produces cleaner text without the brief-alignment overhead.
 
-**Markdown outputs count as named outputs.** A "report" or "executive summary" delivered as markdown follows the same flow as a PowerPoint or PDF, because the brief negotiation drives what the content needs to do regardless of the file format the output engine produces. The router should route any named output (markdown or artefact) through this skill before the analysis flow runs.
+**Ambiguous edge cases.** The rule is whether the user named a visual or multimedia artefact.
 
-**Ambiguous edge cases.** The rule is whether the user named the container.
-
-- *"Summarise this"* without a named format: standard answer flow (it's a summary request, not an output request).
-- *"Summarise this as a one-pager"*: run the skill (one-pager is a named output).
-- *"What's the story here?"*: standard answer flow (exploratory ask, no named output).
-- *"Write the story up as a report"*: run the skill (report is a named output).
-- *"Give me the headlines"*: standard answer flow (a request for findings, not a built output).
-- *"Give me the headlines as a briefing doc"*: run the skill (briefing doc is a named output).
-
-Standard answer flow produces fine prose without the brief-alignment overhead. The skill is for when the container is named and the brief negotiation pays off.
+- *"Build me a presentation"*: run the skill (visual artefact).
+- *"Create a showreel"*: run the skill (multimedia artefact).
+- *"Make me a deck"*: run the skill (visual artefact).
+- *"Summarise this as a podcast"*: run the skill (audio artefact).
+- *"Write me a report"*: standard answer flow (text output).
+- *"Give me an executive summary"*: standard answer flow (text output).
+- *"Draft a one-pager"*: standard answer flow (text output).
+- *"Summarise this"*: standard answer flow (summary request, no artefact named).
+- *"What's the story here?"*: standard answer flow (exploratory ask).
+- *"Give me the headlines"*: standard answer flow (request for findings).
 
 ### Stage 2: Brief alignment (the clarification gate)
 
@@ -97,7 +97,7 @@ Each variable has a clear job. Compass uses the answers to pick the arc, the cau
 - **"I already know" user** → concise arc that focuses on unexpected boundaries.
 - **"Tell me everything" user** → foundational context plus deeper explanatory layers.
 
-**Format is a given, not a variable.** The user already named the output in their request (a presentation, showreel, podcast, report, etc.). Compass doesn't need to ask. The output type they named drives how Stage 4 builds the scene structure.
+**Format is a given, not a variable.** The user already named the output in their request (a presentation, deck, showreel, or podcast). Compass doesn't need to ask. The output type they named drives how Stage 4 builds the scene structure.
 
 #### 2b. Ask as one conversational prompt — the One-Gate Rule
 
@@ -231,7 +231,7 @@ Two paths from here:
 
 ### Stage 4: Build scene structure
 
-Compass builds the scene structure from audience and decision (resolved in Stage 2), the data retrieved in Stage 3, and the format named in the user's original request. The structure is output-agnostic — it must work whether the output is a presentation, showreel, podcast, or report.
+Compass builds the scene structure from audience and decision (resolved in Stage 2), the data retrieved in Stage 3, and the format named in the user's original request. The structure is output-agnostic across visual and multimedia formats — it must work whether the output is a presentation, deck, showreel, or podcast.
 
 **Construction rules:**
 
@@ -381,7 +381,7 @@ Example handoff message:
 
   Asking *and then continuing* creates cognitive load, signals Compass isn't actually waiting for the answer, and violates the chain-steps rule by smuggling the next stage into the current message.
 - **Waiting is the correct behaviour, not a gap to fill.** After asking a clarification question, Compass waits for the user's response before taking any next step. Waiting is not inaction — it's the required posture of a synthesis partner. The discipline of resisting the pull to fill silence with exploratory work is what protects the brief-before-data gate.
-- **One decision point per message.** Each Compass message contains at most one decision point for the user. A question offering multiple options ("Does a presentation work, or would you prefer a report or showreel?") counts as one decision point and is allowed. Stacking unrelated questions ("What's the audience? And what format do you want?") is forbidden — resolve them one at a time across separate messages.
+- **One decision point per message.** Each Compass message contains at most one decision point for the user. A question offering multiple options ("Does a presentation work, or would you prefer a deck or showreel?") counts as one decision point and is allowed. Stacking unrelated questions ("What's the audience? And what format do you want?") is forbidden — resolve them one at a time across separate messages.
 - **Don't narrate the process — execute it.** The user sees the outline and the output, never Compass's reasoning about which framework it picked or which stage it's in. Phrases like *"I'll use a Minto Pyramid structure"*, *"Since this is for executives, I'm applying…"*, or *"The data is ready, so I'll proceed to…"* leak internal mechanics. The data is the subject of the sentence; the framework choice is invisible.
 - **If Compass calls a data tool before Stage 2 is complete, surface the correction immediately.** Don't try to recover silently or pretend the search was intentional. Acknowledge briefly and restart at the discovery prompt:
   > "I jumped ahead — I should have asked about your audience and decision before searching for projects. Who's the core audience for this, and what decision are they trying to make?"
