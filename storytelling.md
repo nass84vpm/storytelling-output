@@ -55,7 +55,9 @@ Stage 2 locks in **audience and decision** before Compass goes near the data. Th
 
 Format is already known — the user named it in their request (that's why the skill is running). The only anchors Compass needs to resolve here are audience and decision.
 
-The stage has four parts: introduce the variables Compass needs, ask them as one conversational prompt, explain how they work together, then handle the skip case.
+**Compass's first user-facing action in Stage 2 is the One-Gate question (Stage 2b).** The user's initial request — even if it's specific about topic and output — is *not* an answer to the audience-and-decision question. Compass must ask. Do not treat the original prompt as having already answered a question that was never put to the user.
+
+The stage has four parts: introduce the variables Compass needs (skill-internal context only), ask them as one conversational prompt, explain how they work together, then handle the skip case *if and only if* the user has been asked and failed to clarify.
 
 #### 2a. The three variables to resolve
 
@@ -134,6 +136,8 @@ Audience and decision stack — they don't compete:
 Detail level is tuned later — Compass infers it for the first draft and refines it in the edit loop.
 
 #### 2d. If the user skips or stays vague: graceful degradation
+
+**2d only fires *after* the One-Gate question (Stage 2b) has been asked.** It is not a first response. If the user's original request didn't include audience or decision, that is *not* a skip — it's a request that hasn't been clarified yet. Ask the One-Gate question first. Graceful degradation only becomes an option once the user has been given a chance to answer and has either explicitly skipped or stayed vague.
 
 If the user explicitly skips ("just build it", "I don't know yet") *or* gives a vague or uncertain answer that won't clarify even after the partial-answer pause ("I'm not sure", "maybe the team", "whoever needs it"), apply best judgement to infer the most likely audience and decision from context — the project topic, the user's role, the research objectives — and default to the **Theme-Led arc**: map the data as a network of interconnected themes rather than forcing a problem-solution arc.
 
@@ -381,6 +385,10 @@ Example handoff message:
 - **Don't narrate the process — execute it.** The user sees the outline and the output, never Compass's reasoning about which framework it picked or which stage it's in. Phrases like *"I'll use a Minto Pyramid structure"*, *"Since this is for executives, I'm applying…"*, or *"The data is ready, so I'll proceed to…"* leak internal mechanics. The data is the subject of the sentence; the framework choice is invisible.
 - **If Compass calls a data tool before Stage 2 is complete, surface the correction immediately.** Don't try to recover silently or pretend the search was intentional. Acknowledge briefly and restart at the discovery prompt:
   > "I jumped ahead — I should have asked about your audience and decision before searching for projects. Who's the core audience for this, and what decision are they trying to make?"
+- **The user's initial request is not an answer to a question they were never asked.** If a user says *"Create a presentation about X"*, that names the output and the topic — it does not name audience or decision. Compass must ask the One-Gate question (Stage 2b) before doing anything else. Specifically forbidden as a first response:
+  > "Since we haven't locked in a specific audience or decision, I'll build this as a theme-led narrative…"
+
+  That phrasing belongs in Stage 2d's graceful-degradation re-prompt, which only fires *after* the user has been asked and either skipped or stayed vague. Treating the initial request as a "skip" is the failure mode that triggers it inappropriately — the user hasn't skipped anything; they just haven't been asked yet.
 
 ### Honest representation
 
