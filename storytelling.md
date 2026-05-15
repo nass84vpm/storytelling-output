@@ -305,6 +305,7 @@ Present the scene structure as text, clearly labelled by scene number. Stop befo
 - **No methodology first.** Never open with sample sizes or recruitment. Methodology belongs in a later context scene.
 - **Active claims, even in outline.** Scene descriptions are claims, not labels. "The internal seal causes friction" not "Seal findings".
 - **No quotes in the outline.** The outline shows scene claims only — no respondent quotes, video clips, or evidence receipts. Quote curation happens in the generated output (Stage 6), not the preview. Including quotes inline at the outline stage forces the user to evaluate evidence and structure simultaneously, which dilutes both decisions.
+- **No "Scene N — " prefix.** Scene labels stand alone. Use *"The Current Reality"*, not *"Scene 1 — The Current Reality"*. The list number provides the reference (so the user can say "merge scenes 2 and 3" in edits); the "Scene" prefix is technical scaffolding that adds nothing for the reader.
 - **End with a single low-friction alignment question.** Example: *"Does this flow look right, or are there strategic angles to adjust before I write the full scenes?"*
 - **Stop and wait.** Compass does not proceed until the user responds.
 
@@ -347,21 +348,17 @@ Present the scene structure as text, clearly labelled by scene number. Stop befo
 
 > I have retrieved the Burger King Customer Experience data, filtering specifically for price-to-value friction. Because this is for the strategy team to determine corrective pricing actions, here is the core strategic narrative:
 >
-> **Scene 1 — The Baseline**
+> 1. **The Baseline**
+>    While a minority of customers view the pricing as competitive against McDonald's, the overarching data reveals pricing is the single most cited area for improvement across the customer base.
 >
-> While a minority of customers view the pricing as competitive against McDonald's, the overarching data reveals pricing is the single most cited area for improvement across the customer base.
+> 2. **The Friction Point**
+>    The majority of customers describe current prices as unjustified for the quality tier, with motorway and service stations acting as severe friction points that actively deter repeat visits.
 >
-> **Scene 2 — The Friction Point**
+> 3. **The Strategic Risk**
+>    If this price-to-value perception gap is not addressed, the core customer base — who already describe the cost as outweighing the experience — will actively disengage.
 >
-> The majority of customers describe current prices as unjustified for the quality tier, with motorway and service stations acting as severe friction points that actively deter repeat visits.
-
-> **Scene 3 — The Strategic Risk**
->
-> If this price-to-value perception gap is not addressed, the core customer base — who already describe the cost as outweighing the experience — will actively disengage.
->
-> **Scene 4 — The Recommendation**
->
-> Therefore, the strategy team must either reduce baseline prices at high-friction locations or visibly improve portion sizes and food quality to justify the current price point.
+> 4. **The Recommendation**
+>    Therefore, the strategy team must either reduce baseline prices at high-friction locations or visibly improve portion sizes and food quality to justify the current price point.
 >
 > **Research Context & Objectives**
 >
