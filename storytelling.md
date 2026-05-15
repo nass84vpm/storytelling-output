@@ -1,6 +1,6 @@
 ---
 name: storytelling
-description: Use this skill when a user requests an output from research data in Compass — a presentation, showreel, podcast, or report — or when Compass identifies that an output would benefit the user even if they didn't explicitly ask. The skill governs the full conversational flow from the user's initial prompt through scene approval to generation handoff. Trigger on phrases like "build me a presentation", "create a showreel", "make me a deck", "summarise this as a podcast", or any request for a derivative output from research data.
+description: Use this skill when a user requests a structured output from research data in Compass — a presentation, showreel, podcast, report, brief, one-pager, executive summary, board update, or any output where the audience would change how it's structured. The skill governs the full conversational flow from the user's initial prompt through scene approval to generation handoff. Trigger on phrases like "build me a presentation", "create a showreel", "make me a deck", "summarise this as a podcast", "write me a report", "give me an executive summary", "brief the marketing team" — anything where the audience shapes the output. Do not trigger on bare summaries or fact lookups where no audience is named or implied.
 ---
 
 # Storytelling skill
@@ -11,7 +11,7 @@ This skill controls how Compass turns a user's request into an output (a present
 
 The skill replaces that shortcut with a deliberate sequence: understand the request, agree the brief, check the data, agree the story, then generate. **The chat is the negotiation moment, not the delivery moment.**
 
-**The skill only runs when the user explicitly asks for an output.** If the user names a presentation, showreel, podcast, deck, or report, Compass follows the full structure below. If they ask anything else — a question, a summary, an open exploration — the skill exits and hands to the standard answer flow.
+**The skill only runs when the user explicitly asks for a structured output.** If the user names a presentation, showreel, podcast, deck, report, brief, one-pager, executive summary, board update, or any output where the audience would change how it's structured, Compass follows the full structure below. If they ask anything else — a bare question, a generic summary, an open exploration — the skill exits and hands to the standard answer flow.
 
 **The brief comes before the data.** Compass resolves audience and decision *first* — then scopes the data lookup to what the brief actually needs. Asking before fetching saves time on irrelevant data scans and prevents Compass from telling a brilliant story that answers the wrong question.
 
@@ -31,11 +31,13 @@ The skill replaces that shortcut with a deliberate sequence: understand the requ
 
 Compass silently classifies the user's message. The user never sees this step. The check is binary:
 
-1. **Output named** — the user explicitly asked for a presentation, showreel, deck, podcast, report, one-pager, or any other named output (*"build me a presentation"*, *"create a showreel"*, *"make me a deck"*, *"summarise this as a podcast"*). → Run the skill, go to Stage 2.
+1. **Structured output named** — the user explicitly asked for an output where the audience would change how it's structured. Examples: *"build me a presentation"*, *"create a showreel"*, *"make me a deck"*, *"write me a report"*, *"give me an executive summary"*, *"a brief for the marketing team"*, *"a one-pager"*, *"board update"*. → Run the skill, go to Stage 2.
 
-2. **Anything else** — questions, summaries, exploratory asks, fact lookups, or anything that doesn't name a specific output. → Exit the skill and hand to the standard answer flow.
+2. **Anything else** — bare questions, generic summaries with no audience implied, exploratory asks, fact lookups. Examples: *"What's the Q3 NPS?"*, *"Summarise this for me"*, *"What did people say?"*, *"Tell me about the packaging research"*. → Exit the skill and hand to the standard answer flow.
 
-The skill is for *building structured outputs*. If the user isn't asking for one, the standard answer flow handles their request better — without the brief-alignment overhead.
+**The test isn't the file format or the noun form — it's whether the audience changes the output.** A markdown report for the leadership team needs the same brief alignment as a PDF presentation. An executive summary deserves the skill too, because *which* executive (CEO, CMO, Board chair) materially changes the structure. A bare *"summary"* with no audience implied doesn't — that's a conversational recap the standard answer flow handles cleanly.
+
+The skill is for *building structured outputs for audiences*. If audience doesn't matter, the standard answer flow handles the request better.
 
 ### Stage 2: Brief alignment (the clarification gate)
 
