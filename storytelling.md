@@ -123,7 +123,7 @@ The user can answer fully, partially, or skip with "just build it" or "I don't k
 **The partial-answer pause.** If the user names audience *or* decision but not both, Compass must surface the missing piece in a single conversational follow-up *before* building scenes. Silently guessing the missing anchor risks producing a strategically irrelevant narrative — or worse, challenging a stakeholder's prior decisions unnecessarily and getting the findings dismissed.
 
 Example — audience named, decision missing:
-> "Got it — the Product Team. Before I outline the scenes, what specific decision are they trying to make based on this research?"
+> "Got it — the Product Team. Before I outline this, what specific decision are they trying to make based on this research?"
 
 Example — decision named, audience missing:
 > "Got it — the question is whether to proceed with the Q4 rollout. Who's the core audience for this story?"
@@ -306,7 +306,7 @@ Present the scene structure as text, clearly labelled by scene number. Stop befo
 - **Active claims, even in outline.** Scene descriptions are claims, not labels. "The internal seal causes friction" not "Seal findings".
 - **No quotes in the outline.** The outline shows scene claims only — no respondent quotes, video clips, or evidence receipts. Quote curation happens in the generated output (Stage 6), not the preview. Including quotes inline at the outline stage forces the user to evaluate evidence and structure simultaneously, which dilutes both decisions.
 - **No "Scene N — " prefix.** Scene labels stand alone. Use *"The Current Reality"*, not *"Scene 1 — The Current Reality"*. The list number provides the reference (so the user can say "merge scenes 2 and 3" in edits); the "Scene" prefix is technical scaffolding that adds nothing for the reader.
-- **End with a single low-friction alignment question.** Example: *"Does this flow look right, or are there strategic angles to adjust before I write the full scenes?"*
+- **End with a single low-friction alignment question.** Example: *"Does this flow look right, or are there strategic angles to adjust before I build it out?"*
 - **Stop and wait.** Compass does not proceed until the user responds.
 
 **Example outlines per audience.** Same packaging dataset, different macro-structure logic underneath, all using relatable labels on the surface:
@@ -364,7 +364,7 @@ Present the scene structure as text, clearly labelled by scene number. Stop befo
 >
 > This strategic arc is grounded in Project 2653 (Burger King Customer Experience). It specifically answers how customers perceive pricing, identifies the biggest location-based pain points, and outlines the required actions to improve price-to-value perception.
 >
-> Does this flow look right, or are there specific strategic angles we should adjust before you write the full scenes?
+> Does this flow look right, or are there specific strategic angles we should adjust before I build it out?
 
 **The edit loop.** If the user wants changes, accept prompt-based edits ("merge scenes 2 and 3", "lead with the customer voice"). Rebuild the structure and re-show. Repeat until the user approves.
 
@@ -376,7 +376,7 @@ Pushback patterns:
 > "A few respondents described it that way, however most leaned in the opposite direction. Leading with the minority view risks misrepresenting where the weight of evidence sits. Want me to surface it as a counter-theme instead?"
 
 *Contradicting the data:*
-> "Several respondents mentioned the opposite of what this framing suggests. Want me to share the contradicting evidence so we can decide how to position it, or reframe the scene to reflect both sides?"
+> "Several respondents mentioned the opposite of what this framing suggests. Want me to share the contradicting evidence so we can decide how to position it, or reframe to reflect both sides?"
 
 *Recommendation with no measurable outcome:*
 > "This recommendation doesn't yet have a measurable outcome attached, so the audience won't know what success looks like. Want to anchor it to a specific goal or behaviour, or leave it as exploratory?"
@@ -397,7 +397,8 @@ Example handoff message:
 
 ### Language and terminology
 
-- Never use "slide" in scene structure. Always "scene".
+- Never use "slide" in scene structure. Always "scene" — *internally*.
+- **"Scene" is an internal term — don't say it to the user.** In skill instructions and Compass's internal reasoning, the construct is called a scene. In user-facing output, refer to the labels themselves, the *outline*, the *story*, or the *flow*. Don't say "before I write the full scenes" — say *"before I build it out"*. Don't say "outline the scenes" — say *"outline this"*.
 - Follow the audience-specific macro-structure logic, but never expose the academic labels (Situation, Complication, Therefore, And, Minto layer, etc.). Use relatable, business-centric labels like "The Friction Point", "The Bottom Line", or "The Pivot" instead.
 - Never invent data. If the data isn't there, say so.
 - Lead with the observation, not with Compass. Start sentences with what was found in the data rather than with "I" or "I've got". "Several projects mention packaging" lands better than "I've got partial data on packaging." The user's data is the subject of the sentence, not the assistant.
