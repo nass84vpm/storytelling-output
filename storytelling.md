@@ -1,6 +1,6 @@
 ---
 name: storytelling
-description: Use this skill when a user requests a structured output from research data in Compass — a presentation, showreel, podcast, report, brief, one-pager, executive summary, board update, or any output where the audience would change how it's structured. The skill governs the full conversational flow from the user's initial prompt through scene approval to generation handoff. Trigger on phrases like "build me a presentation", "create a showreel", "make me a deck", "summarise this as a podcast", "write me a report", "give me an executive summary", "brief the marketing team" — anything where the audience shapes the output. Do not trigger on bare summaries or fact lookups where no audience is named or implied.
+description: Use this skill when a user requests a structured output from research data in Compass: a presentation, deck, showreel, podcast, report, executive summary, one-pager, briefing, or any other named deliverable. The skill governs the full conversational flow from the user's initial prompt through scene approval to generation handoff. Trigger on phrases like "build me a presentation", "create a showreel", "make me a deck", "write me a report", "give me an executive summary", "make a one-pager", "summarise this as a podcast", or any request for a derivative output from research data. Do not trigger on open questions, fact lookups, or exploratory asks that don't name a specific output, which route to the standard answer flow instead.
 ---
 
 # Storytelling skill
@@ -31,13 +31,23 @@ The skill replaces that shortcut with a deliberate sequence: understand the requ
 
 Compass silently classifies the user's message. The user never sees this step. The check is binary:
 
-1. **Structured output named** — the user explicitly asked for an output where the audience would change how it's structured. Examples: *"build me a presentation"*, *"create a showreel"*, *"make me a deck"*, *"write me a report"*, *"give me an executive summary"*, *"a brief for the marketing team"*, *"a one-pager"*, *"board update"*. → Run the skill, go to Stage 2.
+1. **Output named.** The user explicitly asked for a presentation, deck, showreel, podcast, report, executive summary, one-pager, briefing, memo, or any other named structured output (e.g., *"build me a presentation"*, *"create a showreel"*, *"make me a deck"*, *"write me a report"*, *"give me an executive summary"*, *"draft a one-pager"*, *"summarise this as a podcast"*). Run the skill, go to Stage 2.
+2. **Anything else.** Open questions, fact lookups, exploratory asks, or requests that don't name a specific output format. Exit the skill and hand to the standard answer flow.
 
-2. **Anything else** — bare questions, generic summaries with no audience implied, exploratory asks, fact lookups. Examples: *"What's the Q3 NPS?"*, *"Summarise this for me"*, *"What did people say?"*, *"Tell me about the packaging research"*. → Exit the skill and hand to the standard answer flow.
+The skill is for building structured outputs. If the user isn't asking for one, the standard answer flow handles their request better without the brief-alignment overhead.
 
-**The test isn't the file format or the noun form — it's whether the audience changes the output.** A markdown report for the leadership team needs the same brief alignment as a PDF presentation. An executive summary deserves the skill too, because *which* executive (CEO, CMO, Board chair) materially changes the structure. A bare *"summary"* with no audience implied doesn't — that's a conversational recap the standard answer flow handles cleanly.
+**Markdown outputs count as named outputs.** A "report" or "executive summary" delivered as markdown follows the same flow as a PowerPoint or PDF, because the brief negotiation drives what the content needs to do regardless of the file format the output engine produces. The router should route any named output (markdown or artefact) through this skill before the analysis flow runs.
 
-The skill is for *building structured outputs for audiences*. If audience doesn't matter, the standard answer flow handles the request better.
+**Ambiguous edge cases.** The rule is whether the user named the container.
+
+- *"Summarise this"* without a named format: standard answer flow (it's a summary request, not an output request).
+- *"Summarise this as a one-pager"*: run the skill (one-pager is a named output).
+- *"What's the story here?"*: standard answer flow (exploratory ask, no named output).
+- *"Write the story up as a report"*: run the skill (report is a named output).
+- *"Give me the headlines"*: standard answer flow (a request for findings, not a built output).
+- *"Give me the headlines as a briefing doc"*: run the skill (briefing doc is a named output).
+
+Standard answer flow produces fine prose without the brief-alignment overhead. The skill is for when the container is named and the brief negotiation pays off.
 
 ### Stage 2: Brief alignment (the clarification gate)
 
